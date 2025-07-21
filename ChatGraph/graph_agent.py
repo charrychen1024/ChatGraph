@@ -197,11 +197,6 @@ class GraphNLPAgent:
         cypher = str(cypher_response.content).strip()
         # 去除 markdown 代码块包裹
         cypher = clean_cypher(cypher)
-        if cypher.startswith("cypher"):
-            cypher = cypher[len("cypher"):].strip()
-        if cypher.startswith("```") and cypher.endswith("```"):
-            cypher = cypher[3:-3].strip()
-        cypher = re.sub(r"^```[a-zA-Z]*\\n|\\n```$", "", cypher).strip()
         # 执行Cypher并处理结果
         if cypher:
             success, query_result, final_cypher = self.execute_cypher_with_retry(cypher)
@@ -241,11 +236,6 @@ class GraphNLPAgent:
         cypher = str(cypher_response.content).strip()
         # 去除 markdown 代码块包裹
         cypher = clean_cypher(cypher)
-        if cypher.startswith("cypher"):
-            cypher = cypher[len("cypher"):].strip()
-        if cypher.startswith("```") and cypher.endswith("```"):
-            cypher = cypher[3:-3].strip()
-        cypher = re.sub(r"^```[a-zA-Z]*\\n|\\n```$", "", cypher).strip()
         yield f"生成的Cypher:\n{cypher}"
         # 执行Cypher并生成最终回答
         if cypher:

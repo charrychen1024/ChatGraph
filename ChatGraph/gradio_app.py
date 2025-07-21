@@ -7,6 +7,7 @@ import re
 # 初始化Agent
 graph_agent = GraphNLPAgent()
 
+##
 # 用于存储对话历史（问题、回答、cypher）
 chat_history = []
 
