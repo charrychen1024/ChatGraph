@@ -1,0 +1,148 @@
+# 企业关系网络数据生成与导入Neo4j项目说明
+
+## 项目概述
+本项目需要创建一个Python程序，用于模拟生成企业关系网络数据，并将这些数据导入到Neo4j图数据库中。数据包含两类节点（公司和人员）和多种关系类型。
+
+## 详细需求说明
+
+### 1. 项目初始化
+- 创建新的Python项目目录
+- 设置Python虚拟环境
+- 安装必要的依赖包
+
+### 2. 数据结构定义
+需要模拟两类节点和五种关系：
+
+#### 节点类型
+1. **公司节点(Company)**
+   - 属性:
+     - name: 公司名称 (字符串)
+     - credit_code: 统一社会信用代码 (18位数字字母组合，唯一标识)
+     - company_id: 公司ID (唯一数字标识)
+     - reg_date: 注册日期 (字符串格式)
+     - reg_capital: 注册资本 (浮点数，单位万元)
+
+2. **人员节点(Person)**
+   - 属性:
+     - name: 人员姓名 (字符串)
+     - person_id: 人员ID (唯一数字标识)
+     - age: 年龄 (整数，18-70岁)
+     - gender: 性别 (字符串，"男"或"女")
+
+#### 关系类型
+1. **企业投资关系(company_investment)**
+   - 属性:
+     - invest_rate: 投资比例 (浮点数，0-1之间)
+     - invest_date: 投资日期 (字符串格式)
+
+2. **人员投资关系(person_investment)**
+   - 属性:
+     - invest_rate: 投资比例 (浮点数，0-1之间)
+     - invest_date: 投资日期 (字符串格式)
+
+3. **分支机构关系(com_branch)**
+   - 无额外属性
+
+4. **任职关系(per_job)**
+   - 属性:
+     - job_type: 职位类型 (字符串，如"董事长"、"高管"、"监事"等)
+
+5. **法人关系(per_legal_person)**
+   - 属性
+    - job_type: 职位类型（字符串，“法定代表人”）
+
+### 3. 数据生成要求
+- 生成100-200个公司节点
+- 生成300-500个人员节点
+- 为这些节点随机创建关系，确保:
+  - 每个公司至少有1-3个投资关系(公司或人员投资)
+  - 部分公司(约30%)有分支机构关系
+  - 每个公司有1-5个任职人员
+  - 每个公司有1个法人关系
+- 属性值应尽可能真实合理:
+  - 公司名称可使用地区+行业+组织形式组合
+  - 信用代码符合规则(18位，包含数字和大写字母)
+  - 注册日期在2000-2023年之间
+  - 注册资本在10-10000万元之间
+  - 人员年龄分布合理
+
+### 4. Neo4j数据库连接与导入
+- 创建Python脚本连接Neo4j数据库
+- 实现数据导入功能:
+  - 先清除现有数据(可选)
+  - 批量创建所有节点
+  - 批量创建所有关系
+- 处理可能的错误和异常
+
+### 5. 代码结构建议
+```
+/project_root
+│── /venv (Python虚拟环境)
+│── /data (生成的数据文件，可选)
+│── config.py (数据库配置)
+│── data_generator.py (数据生成模块)
+│── db_connector.py (数据库连接和操作模块)
+│── main.py (主程序)
+│── requirements.txt (依赖文件)
+```
+
+### 6. 技术要求
+- 使用Python 3.9+
+- 使用Faker库生成真实数据
+- 使用neo4j Python驱动或py2neo库连接数据库
+- 代码应有良好的结构和注释
+
+### 7. 额外建议
+- 实现进度条显示数据生成和导入进度
+- 添加参数控制生成数据的规模
+- 考虑数据生成的随机性但保持一定合理性
+- 添加数据验证逻辑确保生成的图数据符合业务规则
+
+## 示例代码结构
+
+```python
+# data_generator.py 示例片段
+from faker import Faker
+import random
+from datetime import datetime, timedelta
+
+class DataGenerator:
+    def __init__(self):
+        self.fake = Faker('zh_CN')
+        self.companies = []
+        self.persons = []
+        self.relationships = []
+    
+    def generate_company(self):
+        # 实现公司节点生成逻辑
+        pass
+    
+    def generate_person(self):
+        # 实现人员节点生成逻辑
+        pass
+    
+    def generate_relationships(self):
+        # 实现各种关系生成逻辑
+        pass
+```
+
+```python
+# db_connector.py 示例片段
+from neo4j import GraphDatabase
+
+class Neo4jConnector:
+    def __init__(self, uri, user, password):
+        self.driver = GraphDatabase.driver(uri, auth=(user, password))
+    
+    def clear_database(self):
+        # 清空数据库
+        pass
+    
+    def create_companies(self, companies):
+        # 批量创建公司节点
+        pass
+    
+    # 其他数据库操作方法
+```
+
+请根据以上详细说明实现项目代码，确保数据生成的合理性和导入的高效性。

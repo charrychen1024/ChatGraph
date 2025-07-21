@@ -1,0 +1,11 @@
+faker
+neo4j
+tqdm
+langchain
+langchain-openai
+langchain-community
+langchain-neo4j
+pydantic
+faiss-cpu
+dashscope
+openai 
