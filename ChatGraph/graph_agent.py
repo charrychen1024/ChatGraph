@@ -184,7 +184,19 @@ class GraphNLPAgent:
     def query(self, question: str):
         question_type = self.classify_question(question)
         if question_type == "general_chat":
-            general_response = self.llm.invoke(f"用户说：{question}\n请用友好的方式回复，不要涉及图数据库查询。")
+            general_response = self.llm.invoke(f"""
+                你是一个企业知识图谱智能问答助手，专门用于查询企业、人员、投资关系等图数据库信息。
+
+                用户问题：{question}
+
+                请根据问题类型进行回答：
+                1. 如果是问候语（如"你好"、"早上好"等），请友好回应并简要介绍自己的功能
+                2. 如果是询问天气、时间等无关问题，请礼貌说明自己专注于企业知识图谱查询
+                3. 如果是询问你的功能或能力，请详细介绍你可以查询企业、人员、投资关系等信息
+                4. 如果是其他一般性问题，请根据问题本身进行简单回答，并引导用户尝试企业相关的查询
+
+                请用专业、友好的语气回答。
+                """)
             return {"result": general_response.content, "cypher": None}
         history = self.memory.load_memory_variables({}).get("history", [])
         history_text = "\n".join([f"用户: {h.content}" if h.type=="human" else f"助手: {h.content}" for h in history])
@@ -222,7 +234,19 @@ class GraphNLPAgent:
     def stream_query(self, question: str):
         question_type = self.classify_question(question)
         if question_type == "general_chat":
-            general_response = self.llm.invoke(f"用户说：{question}\n请用友好的方式回复，不要涉及图数据库查询。")
+            general_response = self.llm.invoke(f"""
+                你是一个企业知识图谱智能问答助手，专门用于查询企业、人员、投资关系等图数据库信息。
+
+                用户问题：{question}
+
+                请根据问题类型进行回答：
+                1. 如果是问候语（如"你好"、"早上好"等），请友好回应并简要介绍自己的功能
+                2. 如果是询问天气、时间等无关问题，请礼貌说明自己专注于企业知识图谱查询
+                3. 如果是询问你的功能或能力，请详细介绍你可以查询企业、人员、投资关系等信息
+                4. 如果是其他一般性问题，请根据问题本身进行简单回答，并引导用户尝试企业相关的查询
+
+                请用专业、友好的语气回答。
+                """)
             yield general_response.content
             return
         history = self.memory.load_memory_variables({}).get("history", [])
