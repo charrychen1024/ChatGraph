@@ -17,10 +17,17 @@ import config
 # Set API key environment variable in script
 os.environ["OPENAI_API_KEY"] = "sk-086fa9f54d164f1199951bf93c41c4b6"
 
-# 1. 加载schema知识库
+# 1. 加载schema知识库和Cypher示例知识库
 schema_path = os.path.join(os.path.dirname(__file__), 'database_schema.md')
+examples_path = os.path.join(os.path.dirname(__file__), 'cypher_examples.md')
 loader = TextLoader(schema_path, encoding='utf-8')
 docs = loader.load()
+# 加载Cypher示例
+if os.path.exists(examples_path):
+    with open(examples_path, 'r', encoding='utf-8') as f:
+        cypher_examples = f.read()
+    # 合并到schema docs[0].page_content
+    docs[0].page_content += '\n\n# Cypher查询示例\n' + cypher_examples
 text_splitter = MarkdownTextSplitter(chunk_size=800, chunk_overlap=100)
 documents = text_splitter.split_documents(docs)
 embeddings = DashScopeEmbeddings(
@@ -113,6 +120,7 @@ cypher_gen_prompt = PromptTemplate(
 历史对话：{history}
 请根据用户问题，生成最合适的Cypher查询语句，只输出Cypher，不要执行，不要解释。
 问题：{question}
+要求：生成的cypher语句参考示例库中的格式和结构，只返回字符串部分，不要包含任何markdown代码块包裹。
 Cypher:
 """
 )
@@ -215,11 +223,45 @@ class GraphNLPAgent:
             if success:
                 context = str(query_result)
                 response_prompt = f"""
-                        基于以下查询结果，回答用户问题：
-                        用户问题：{question}
-                        查询结果：{context}
-                        请用自然语言回答用户问题，如果结果为空，说明没有找到相关信息。
-                        """
+基于以下查询结果，回答用户问题：
+用户问题：{question}
+查询结果：{context}
+
+请用自然语言回答用户问题，如果结果为空，说明没有找到相关信息。
+
+如果查询结果包含多个实体和关系（如投资关系、分支机构关系、人员关系等），请在回答后添加关系网络图。
+
+格式要求：
+1. 先给出自然语言回答
+2. 如果涉及关系网络，在回答后添加：
+   ---
+   **关系网络图：**
+   ```mermaid
+   graph LR
+       [实体1] -->|关系类型| [实体2]
+       [实体2] -->|关系类型| [实体3]
+   ```
+
+参考示例：
+- 投资关系：`张伟 -->|投资| 阿里巴巴集团`
+- 分支机构：`总公司 -->|分支机构| 北京分公司`
+- 任职关系：`张伟 -->|CEO| 阿里巴巴集团`
+- 合作关系：`阿里巴巴 -->|战略合作| 腾讯`
+
+图形生成规则：
+1. 使用 `graph LR`（从左到右布局）
+2. 实体名称使用查询结果中的实际名称
+3. 关系类型使用中文描述（投资、分支机构、任职、合作等）
+4. 只在实际存在关系时才生成图形
+5. 当关系过多时，选择最重要的关系进行展示
+6. 避免图形过于复杂，保持简洁清晰
+
+注意：
+- 只在实际存在关系时才生成图形
+- 实体名称要准确，避免歧义
+- 关系类型要清晰明确
+- 如果查询结果不包含关系网络，则不生成图形
+"""
                 response = self.llm.invoke(response_prompt)
                 final_result = response.content
                 cypher = final_cypher
@@ -267,11 +309,45 @@ class GraphNLPAgent:
             if success:
                 context = str(query_result)
                 response_prompt = f"""
-                    基于以下查询结果，回答用户问题：
-                    用户问题：{question}
-                    查询结果：{context}
-                    请用自然语言回答用户问题，如果结果为空，说明没有找到相关信息。
-                    """
+基于以下查询结果，回答用户问题：
+用户问题：{question}
+查询结果：{context}
+
+请用自然语言回答用户问题，如果结果为空，说明没有找到相关信息。
+
+如果查询结果包含多个实体和关系（如投资关系、分支机构关系、人员关系等），请在回答后添加关系网络图。
+
+格式要求：
+1. 先给出自然语言回答
+2. 如果涉及关系网络，在回答后添加：
+   ---
+   **关系网络图：**
+   ```mermaid
+   graph LR
+       [实体1] -->|关系类型| [实体2]
+       [实体2] -->|关系类型| [实体3]
+   ```
+
+参考示例：
+- 投资关系：`张伟 -->|投资| 阿里巴巴集团`
+- 分支机构：`总公司 -->|分支机构| 北京分公司`
+- 任职关系：`张伟 -->|CEO| 阿里巴巴集团`
+- 合作关系：`阿里巴巴 -->|战略合作| 腾讯`
+
+图形生成规则：
+1. 使用 `graph LR`（从左到右布局）
+2. 实体名称使用查询结果中的实际名称
+3. 关系类型使用中文描述（投资、分支机构、任职、合作等）
+4. 只在实际存在关系时才生成图形
+5. 当关系过多时，选择最重要的关系进行展示
+6. 避免图形过于复杂，保持简洁清晰
+
+注意：
+- 只在实际存在关系时才生成图形
+- 实体名称要准确，避免歧义
+- 关系类型要清晰明确
+- 如果查询结果不包含关系网络，则不生成图形
+"""
                 response = self.llm.invoke(response_prompt)
                 final_result = response.content
             else:
