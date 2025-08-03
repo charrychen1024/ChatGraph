@@ -4,6 +4,7 @@ import datetime
 import json
 import re
 import base64
+from urllib.parse import quote
 
 # 初始化Agent
 graph_agent = GraphNLPAgent()
@@ -33,6 +34,38 @@ def extract_mermaid_from_response(response_text):
     else:
         return response_text, []
 
+# 辅助函数：将 Mermaid 代码转换为 SVG 图像
+# 增强版中文兼容转换函数
+def mermaid_to_svg(mermaid_code):
+    # 处理中文编码
+    encoded = mermaid_code.encode('utf-8')
+    
+    # 双重安全编码方案
+    base64_bytes = base64.urlsafe_b64encode(encoded)
+    base64_string = base64_bytes.decode('ascii').rstrip('=')
+    
+    # 替代方案：URL 编码（更可靠）
+    url_encoded = quote(mermaid_code, safe='')
+    
+    # 优先使用 base64，失败时回退到 URL 编码
+    return f"https://mermaid.ink/svg/{base64_string}"
+
+# 修改后的输出处理
+def process_output(mermaid_codes):
+    output_html = ""
+    
+    for i, code in enumerate(mermaid_codes):
+        svg_url = mermaid_to_svg(code)
+        output_html += f"""
+        <div style="margin: 20px 0; text-align: center; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+            <h4 style="margin-bottom: 15px; color: #333;">关系网络图 {i+1}</h4>
+            <img src="{svg_url}" alt="Mermaid Diagram" 
+                 style="max-width: 100%; border: 1px solid #eee; padding: 10px; border-radius: 6px; background: white;">
+        </div>
+        """
+    
+    return output_html
+
 def chat_fn(message, history):
     """处理聊天消息，支持流式输出"""
     yield "🤔 正在思考，请稍候...", []
@@ -57,17 +90,7 @@ def chat_fn(message, history):
     
     # 将Mermaid图形嵌入到回复中
     if mermaid_codes:
-        mermaid_html = ""
-        for i, mermaid_code in enumerate(mermaid_codes):
-            # 添加手动渲染按钮
-            mermaid_html += f'''
-            <div style="text-align: center; margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
-                <button onclick="renderMermaidById('mermaid-{i}')" style="margin-bottom: 10px; padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">渲染图表</button>
-                <div class="mermaid" id="mermaid-{i}">
-                {mermaid_code}
-                </div>
-            </div>
-            '''
+        mermaid_html = process_output(mermaid_codes)
         clean_answer += f"\n\n**关系网络图：**\n{mermaid_html}"
     
     if cypher:
