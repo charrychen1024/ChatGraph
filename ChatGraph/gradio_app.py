@@ -59,31 +59,14 @@ def chat_fn(message, history):
     if mermaid_codes:
         mermaid_html = ""
         for i, mermaid_code in enumerate(mermaid_codes):
+            # 添加手动渲染按钮
             mermaid_html += f'''
             <div style="text-align: center; margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                <button onclick="renderMermaidById('mermaid-{i}')" style="margin-bottom: 10px; padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">渲染图表</button>
                 <div class="mermaid" id="mermaid-{i}">
                 {mermaid_code}
                 </div>
             </div>
-            <script>
-            setTimeout(function() {{
-                if (typeof mermaid !== 'undefined') {{
-                    mermaid.initialize({{
-                        startOnLoad: false,
-                        theme: 'default',
-                        flowchart: {{
-                            useMaxWidth: true,
-                            htmlLabels: true
-                        }}
-                    }});
-                    const div = document.getElementById('mermaid-{i}');
-                    if (div && !div.hasAttribute('data-processed')) {{
-                        div.setAttribute('data-processed', 'true');
-                        mermaid.init(undefined, div);
-                    }}
-                }}
-            }}, 100);
-            </script>
             '''
         clean_answer += f"\n\n**关系网络图：**\n{mermaid_html}"
     
@@ -134,166 +117,272 @@ def show_alert_message(message):
     </script>
     """
 
+# 简洁的CSS样式
 custom_css = '''
-#main-title {text-align:center; font-size:2rem; font-weight:600; margin-bottom: 0.5em;}
-#chatbot-area {height: 60vh; min-height: 350px;}
-#input-row {margin-top: 0.5em; align-items: center !important;}
-#input-row .gr-box {display: flex; align-items: center;}
-#input-box textarea {
-    font-size:1.1em; min-height:2.5em; height:2.5em !important; line-height:2.5em !important;
-    padding-top: 0.2em !important; padding-bottom: 0.2em !important; box-sizing: border-box; resize: none;
+/* 基础样式重置 */
+* {
+    box-sizing: border-box;
 }
-#send-btn, #clear-btn, #export-btn {
-    min-width: 90px; max-width: 120px; height: 2.5em; font-size:1em; margin-left: 0.5em;
-    vertical-align: middle; padding: 0 !important;
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
 }
-#input-box {margin-bottom: 0 !important;}
-#download-file {margin-left: 0.5em;}
-.mermaid {
+
+/* 主容器 */
+.gradio-container {
+    height: 100vh !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background: #f5f5f5;
+}
+
+/* 标题 */
+#main-title {
     text-align: center;
-    margin: 20px 0;
-    padding: 15px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    padding: 10px 0;
+}
+
+/* 聊天区域 */
+#chatbot-area {
+    flex: 1 !important;
+    height: calc(100vh - 200px) !important;
+    min-height: 300px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    background: white;
+    overflow-y: auto;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* 聊天消息样式 */
+#chatbot-area .message {
+    # margin-bottom: 12px;
+    # padding: 12px 16px;
+    # border-radius: 8px;
+    max-width: 100%;
+    word-wrap: break-word;        /* 在单词内换行 */
+    word-break: break-word;       /* 适合中文的换行 */
+    overflow-wrap: break-word;    /* 现代浏览器标准 */
+    line-height: 0.8;
+}
+
+#chatbot-area .user-message {
+    background: #007bff;
+    color: white;
+    margin-left: auto;
+}
+
+#chatbot-area .bot-message {
+    background: #f8f9fa;
+    color: #333;
     border: 1px solid #e9ecef;
 }
-.mermaid svg {
-    max-width: 100%;
-    height: auto;
+
+/* 输入区域 - 固定在底部 */
+#input-row {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    margin-top: auto;
 }
 
+/* 输入框 */
+#input-box textarea {
+    font-size: 14px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    resize: none;
+    min-height: 45px;
+    max-height: 120px;
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+#input-box textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+#input-box {
+    width: 100% !important;
+    flex: 1;
+}
+
+/* 按钮样式 */
+#send-btn, #clear-btn, #export-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#send-btn {
+    background: #007bff;
+    color: white;
+}
+
+#send-btn:hover {
+    background: #0056b3;
+}
+
+#clear-btn {
+    background: #dc3545;
+    color: white;
+}
+
+#clear-btn:hover {
+    background: #c82333;
+}
+
+#export-btn {
+    background: #28a745;
+    color: white;
+}
+
+#export-btn:hover {
+    background: #218838;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* 代码块样式 */
+pre {
+    background: #f8f9fa;
+    color: #333;
+    padding: 12px;
+    border-radius: 6px;
+    overflow-x: auto;
+    border: 1px solid #e9ecef;
+}
+
+code {
+    background: #f1f3f4;
+    color: #333;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Menlo', monospace;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .gradio-container {
+        padding: 10px;
+    }
+    
+    #main-title {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+    
+    #chatbot-area {
+        height: calc(100vh - 180px) !important;
+        padding: 15px;
+    }
+    
+    #input-row {
+        padding: 10px;
+    }
+    
+    #send-btn, #clear-btn, #export-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
 '''
 
-with gr.Blocks(css=custom_css, head="""
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
-<script>
-// 全局Mermaid初始化
-window.mermaidInitialized = false;
-
-function initializeMermaid() {
-    if (window.mermaidInitialized) return;
+with gr.Blocks(css=custom_css) as demo:
+    # 主标题
+    gr.Markdown("<div id='main-title'>企业知识图谱智能问答</div>")
     
-    if (typeof mermaid !== 'undefined') {
-        mermaid.initialize({
-            startOnLoad: false,
-            theme: 'default',
-            flowchart: {
-                useMaxWidth: true,
-                htmlLabels: true
-            }
-        });
-        window.mermaidInitialized = true;
-        console.log('Mermaid initialized successfully');
-    } else {
-        console.log('Mermaid not loaded yet, retrying...');
-        setTimeout(initializeMermaid, 100);
-    }
-}
-
-// 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', function() {
-    initializeMermaid();
-});
-
-// 监听HTML组件更新
-function renderMermaidGraphs() {
-    if (typeof mermaid === 'undefined') {
-        setTimeout(renderMermaidGraphs, 100);
-        return;
-    }
-    
-    const mermaidDivs = document.querySelectorAll('.mermaid:not([data-processed])');
-    mermaidDivs.forEach(function(div) {
-        div.setAttribute('data-processed', 'true');
-        try {
-            mermaid.init(undefined, div);
-            console.log('Mermaid graph rendered:', div.id);
-        } catch (error) {
-            console.error('Error rendering mermaid graph:', error);
-        }
-    });
-}
-
-// 定期检查新的Mermaid元素
-setInterval(renderMermaidGraphs, 500);
-
-// 全局弹窗函数
-function showAlert(message) {
-    // 创建模态弹窗
-    const modal = document.createElement('div');
-    modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 10000;
-    `;
-    
-    // 创建弹窗内容
-    const content = document.createElement('div');
-    content.style.cssText = `
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        max-width: 400px;
-        text-align: center;
-        position: relative;
-    `;
-    
-    // 添加消息内容
-    content.innerHTML = `
-        <div style="margin-bottom: 15px; font-size: 16px;">${message}</div>
-        <button onclick="this.parentElement.parentElement.remove()" style="
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        ">确定</button>
-    `;
-    
-    // 点击背景关闭弹窗
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            modal.remove();
-        }
-    });
-    
-    // 添加ESC键关闭功能
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && document.body.contains(modal)) {
-            modal.remove();
-        }
-    });
-    
-    modal.appendChild(content);
-    document.body.appendChild(modal);
-}
-</script>
-""") as demo:
-    gr.Markdown("<div id='main-title'>企业知识图谱智能问答（Neo4j + LLM）</div>")
-    
+    # 聊天区域
     with gr.Row():
-        chatbot = gr.Chatbot(elem_id="chatbot-area", height=550, render_markdown=True, show_label=False)
+        chatbot = gr.Chatbot(
+            elem_id="chatbot-area", 
+            height=600, 
+            render_markdown=True, 
+            show_label=False,
+            container=True,
+            bubble_full_width=True
+        )
     
+    # 输入和控制区域
     with gr.Row(elem_id="input-row"):
-        with gr.Column(scale=8):
-            msg = gr.Textbox(label="", placeholder="请输入您的问题，例如：陈建投资了哪些公司？", elem_id="input-box")
-        with gr.Column(scale=2, min_width=220):
+        with gr.Column(scale=15):
+            msg = gr.Textbox(
+                label="", 
+                placeholder="请输入您的问题，例如：陈建投资了哪些公司？", 
+                elem_id="input-box",
+                lines=1,
+                max_lines=3
+            )
+        with gr.Column(scale=5, min_width=200):
             with gr.Row():
-                send_btn = gr.Button("发送", elem_id="send-btn")
-                clear_btn = gr.Button("清空对话", elem_id="clear-btn")
-                export_btn = gr.Button("导出历史", elem_id="export-btn")
-                download_file = gr.File(label="下载历史", visible=False, elem_id="download-file")
+                send_btn = gr.Button("发送", elem_id="send-btn", size="sm")
+                clear_btn = gr.Button("清空", elem_id="clear-btn", size="sm")
+                export_btn = gr.Button("导出", elem_id="export-btn", size="sm")
+            download_file = gr.File(label="下载历史", visible=False, elem_id="download-file")
+    
+    # 帮助信息
+    with gr.Accordion("💡 使用帮助", open=False):
+        gr.Markdown("""
+        ### 使用说明
+        
+        **基本功能：**
+        - 输入问题，系统会自动分析并生成Cypher查询
+        - 支持企业关系查询、投资关系、人员关系等
+        - 自动生成关系网络图可视化
+        
+        **示例问题：**
+        - 张伟投资了哪些公司？
+        - 阿里巴巴集团有哪些子公司？
+        - 陈建和李明之间有什么关系？
+        - 哪些公司被腾讯投资了？
+        
+        **特殊功能：**
+        - 关系网络图会在下方单独区域显示
+        - 使用"导出"保存对话记录
+        - 使用"清空"开始新的对话
+        """)
 
+    # 处理消息的函数
     def user_send(user_message, chat_history):
         chat_history = chat_history or []
         
@@ -316,6 +405,8 @@ function showAlert(message) {
         # 最终结果，添加到聊天历史
         if final_response:
             chat_history.append((user_message, final_response))
+            yield "", chat_history
+        else:
             yield "", chat_history
 
     send_btn.click(user_send, [msg, chatbot], [msg, chatbot])
