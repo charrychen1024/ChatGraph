@@ -8,4 +8,7 @@ langchain-neo4j
 pydantic
 faiss-cpu
 dashscope
-openai 
+openai
+gradio
+argparse
+urllib3
