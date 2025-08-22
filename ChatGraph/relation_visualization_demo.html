@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>节点关系图</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <link href="https://unpkg.com/vis-network/styles/vis-network.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        #network-container {
+            width: 100%;
+            height: 100vh;
+            border: 1px solid #ccc;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+        }
+        
+        .tooltip {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.95);
+            border: 1px solid #6c9eec;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            pointer-events: none;
+            z-index: 1000;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            backdrop-filter: blur(4px);
+        }
+        
+        /* 节点标签省略号样式 */
+        .vis-label {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="network-container"></div>
+    <div id="tooltip" class="tooltip" style="display: none;"></div>
+
+    <script>
+        // 预定义颜色数组
+        const nodeColors = [
+            {background: '#FF6B6B', border: '#D32F2F', highlight: {background: '#FF8A80', border: '#B71C1C'}},  // 红色系
+            {background: '#4ECDC4', border: '#009688', highlight: {background: '#80E6DE', border: '#00796B'}},  // 青色系
+            {background: '#45B7D1', border: '#1976D2', highlight: {background: '#81D4FA', border: '#0D47A1'}},  // 蓝色系
+            {background: '#FFBE0B', border: '#FF8F00', highlight: {background: '#FFD54F', border: '#E65100'}},  // 黄色系
+            {background: '#9B5DE5', border: '#7B1FA2', highlight: {background: '#CE93D8', border: '#4A148C'}},  // 紫色系
+            {background: '#00BB9D', border: '#00796B', highlight: {background: '#4DB6AC', border: '#004D40'}},  // 绿色系
+            {background: '#F15BB5', border: '#C2185B', highlight: {background: '#F48FB1', border: '#880E4F'}},  // 粉色系
+            {background: '#00BBF9', border: '#0288D1', highlight: {background: '#81D4FA', border: '#01579B'}}   // 天蓝色系
+        ];
+        
+        const edgeColors = [
+            {color: '#D32F2F', highlight: '#FFCDD2'},  // 红色系
+            {color: '#009688', highlight: '#B2DFDB'},  // 青色系
+            {color: '#1976D2', highlight: '#BBDEFB'},  // 蓝色系
+            {color: '#FF8F00', highlight: '#FFE0B2'},  // 黄色系
+            {color: '#7B1FA2', highlight: '#E1BEE7'},  // 紫色系
+            {color: '#00796B', highlight: '#B2DFDB'},  // 绿色系
+            {color: '#C2185B', highlight: '#F8BBD0'},  // 粉色系
+            {color: '#0288D1', highlight: '#BBDEFB'},  // 天蓝色系
+            {color: '#757575', highlight: '#E0E0E0'}   // 灰色系
+        ];
+
+        // 随机选择颜色的函数
+        function getRandomNodeColor(type) {
+            if (type === 'company') {
+                return {background: '#45B7D1', border: '#1976D2', highlight: {background: '#81D4FA', border: '#0D47A1'}};  // 蓝色系
+            }if (type === 'person') {
+                return {background: '#FFA726', border: '#FF8F00', highlight: {background: '#FFD54F', border: '#FF6F00'}};  // 黄色系
+            } else
+                return {background: '#FF1744', border: '#D50000', highlight: {background: '#FF4081', border: '#C2185B'}};       
+        }
+        
+        function getRandomEdgeColor() {
+            return {color: '#757575', highlight: '#E0E0E0'};
+        }
+
+        // 创建节点和边数据
+        function truncateLabel(label, maxLength = 8) {
+            if (label.length > maxLength) {
+                return label.substring(0, maxLength) + '...';
+            }
+            return label;
+        }
+        
+        // 精简后的节点数据
+        const nodes = [
+            {id: '1', label: truncateLabel('江苏省制造有限公司'), type: 'company', 
+             title: JSON.stringify({
+                 "公司名称": "江苏省制造有限公司",
+                 "注册日期": "2015-08-21",
+                 "公司ID": 1,
+                 "信用代码": "9HGNS31UFR0GP8YW10",
+                 "注册资本": 5418.71
+             }), color: getRandomNodeColor('company')},
+            {id: '101', label: truncateLabel('台湾省咨询有限公司'), type: 'company', 
+             title: JSON.stringify({
+                 "公司名称": "台湾省咨询有限公司",
+                 "注册日期": "2004-12-12",
+                 "公司ID": 101,
+                 "信用代码": "FT3E5JQZR5FJMPZX75",
+                 "注册资本": 9700.62
+             }), color: getRandomNodeColor('company')},
+            {id: '6', label: truncateLabel('上海市教育有限公司'), type: 'company', 
+             title: JSON.stringify({
+                 "公司名称": "上海市教育有限公司",
+                 "注册日期": "2023-02-03",
+                 "公司ID": 6,
+                 "信用代码": "SMJ63JUX1X2VGRA9S6",
+                 "注册资本": 2909.94
+             }), color: getRandomNodeColor('company')},
+            {id: '243', label: truncateLabel('黑龙江省地产集团公司'), type: 'company', 
+             title: JSON.stringify({
+                 "公司名称": "黑龙江省地产集团公司",
+                 "注册日期": "2015-02-02",
+                 "公司ID": 243,
+                 "信用代码": "G2UYX51HULN11XHGGF",
+                 "注册资本": 4063.85
+             }), color: getRandomNodeColor('company')},
+            {id: '44', label: truncateLabel('海南省教育集团公司'), type: 'company', 
+             title: JSON.stringify({
+                 "公司名称": "海南省教育集团公司",
+                 "注册日期": "2013-02-08",
+                 "公司ID": 44,
+                 "信用代码": "SDQHCG4CE069ULAZ9I",
+                 "注册资本": 7397.8
+             }), color: getRandomNodeColor('company')},
+            {id: '44_person', label: truncateLabel('关桂香'), type: 'person', 
+             title: JSON.stringify({
+                 "姓名": "关桂香",
+                 "性别": "女",
+                 "年龄": 38,
+                 "人员ID": 44
+             }), color: getRandomNodeColor('person')},
+            {id: '238', label: truncateLabel('浙江省投资集团公司'), type: 'company', 
+             title: JSON.stringify({
+                 "公司名称": "浙江省投资集团公司",
+                 "注册日期": "2006-07-10",
+                 "公司ID": 238,
+                 "信用代码": "VPVR90B52X7MJOG74X",
+                 "注册资本": 9176.59
+             }), color: getRandomNodeColor('company')},
+            {id: '22', label: truncateLabel('河北省贸易合伙企业'), type: 'company', 
+             title: JSON.stringify({
+                 "公司名称": "河北省贸易合伙企业",
+                 "注册日期": "2006-10-27",
+                 "公司ID": 22,
+                 "信用代码": "U8UXWEWFMH7FJWN9DK",
+                 "注册资本": 9598.44
+             }), color: getRandomNodeColor('company')},
+            {id: '2', label: truncateLabel('内蒙古自治区医药股份公司'), type: 'company', 
+             title: JSON.stringify({
+                 "公司名称": "内蒙古自治区医药股份公司",
+                 "注册日期": "2008-05-30",
+                 "公司ID": 2,
+                 "信用代码": "YQIRXJCORYXEWX3MQA",
+                 "注册资本": 7434.04
+             }), color: getRandomNodeColor('company')}
+        ];
+
+        // 精简后的边数据
+        const edges = [
+            {from: '1', to: '101', arrows: {to: true}, label: '31%', 
+             title: JSON.stringify({
+                 "投资比例": "31%",
+                 "投资日期": "2022-06-11"
+             }), color: getRandomEdgeColor()},
+            {from: '101', to: '6', arrows: {to: true}, label: '8%', 
+             title: JSON.stringify({
+                 "投资比例": "8%",
+                 "投资日期": "2022-12-14"
+             }), color: getRandomEdgeColor()},
+            {from: '6', to: '243', arrows: {to: true}, label: '98%', 
+             title: JSON.stringify({
+                 "投资比例": "98%",
+                 "投资日期": "2015-11-13"
+             }), color: getRandomEdgeColor()},
+            {from: '101', to: '44', arrows: {to: true}, label: '5%', 
+             title: JSON.stringify({
+                 "投资比例": "5%",
+                 "投资日期": "2018-03-22"
+             }), color: getRandomEdgeColor()},
+            {from: '101', to: '44_person', arrows: {to: true}, label: '33%', 
+             title: JSON.stringify({
+                 "投资比例": "33%",
+                 "投资日期": "2011-12-24"
+             }), color: getRandomEdgeColor()},
+            {from: '44_person', to: '238', arrows: {to: true}, label: '79%', 
+             title: JSON.stringify({
+                 "投资比例": "79%",
+                 "投资日期": "2021-07-06"
+             }), color: getRandomEdgeColor()},
+            {from: '1', to: '22', arrows: {to: true}, label: '1%', 
+             title: JSON.stringify({
+                 "投资比例": "1%",
+                 "投资日期": "2008-03-20"
+             }), color: getRandomEdgeColor()},
+            {from: '22', to: '2', arrows: {to: true}, label: '94%', 
+             title: JSON.stringify({
+                 "投资比例": "94%",
+                 "投资日期": "2019-03-28"
+             }), color: getRandomEdgeColor()}
+        ];
+
+        // 创建网络图
+        const container = document.getElementById('network-container');
+        const tooltip = document.getElementById('tooltip');
+        const data = {
+            nodes: nodes,
+            edges: edges
+        };
+        const options = {
+            physics: {
+                enabled: true,
+                stabilization: { iterations: 150 },
+                solver: 'repulsion',
+                repulsion: {
+                    nodeDistance: 200,
+                    centralGravity: 0.1,
+                    springLength: 300,
+                    springConstant: 0.05
+                }
+            },
+            nodes: {
+                borderWidth: 3,
+                font: { 
+                    color: '#ffffff',
+                    size: 24,
+                    face: 'Segoe UI',
+                    bold: {
+                        color: '#ffffff',
+                        size: 22
+                    }
+                },
+                shape: 'circle',
+                size: 90,
+                scaling: {
+                    label: {
+                        enabled: false
+                    }
+                },
+                chosen: {
+                    node: function(values, id, selected, hovering) {
+                        values.shadow = true;
+                        values.shadowColor = 'rgba(0,0,0,0.2)';
+                        values.shadowSize = 15;
+                        values.shadowX = 0;
+                        values.shadowY = 0;
+                    }
+                },
+                widthConstraint: {
+                    maximum: 170
+                },
+                title: undefined  // 禁用节点默认title
+            },
+            edges: {
+                font: { 
+                    size: 16,
+                    color: '#444',
+                    background: 'rgba(255, 255, 255, 0.8)',
+                    strokeWidth: 2,
+                    strokeColor: '#ffffff'
+                },
+                arrows: {
+                    to: {enabled: true, scaleFactor: 1.2, type: 'arrow'}
+                },
+                smooth: {
+                    enabled: true,
+                    type: "dynamic",
+                    roundness: 0.5
+                },
+                width: 3,
+                chosen: {
+                    edge: function(values, id, selected, hovering) {
+                        values.shadow = true;
+                        values.shadowColor = 'rgba(0,0,0,0.2)';
+                        values.shadowSize = 10;
+                        values.shadowX = 0;
+                        values.shadowY = 0;
+                    }
+                },
+                widthConstraint: {
+                    maximum: 150
+                },
+                title: undefined  // 禁用边默认title
+            },
+            interaction: {
+                hover: true,
+                tooltipDelay: 100000  // 设置极大延迟，实际禁用默认tooltip
+            }
+        };
+        
+        const network = new vis.Network(container, data, options);
+        
+        // 禁用默认tooltip显示
+        network.on("beforeDrawing", function (ctx) {
+            // 确保不显示默认的title tooltip
+        });
+        
+        // 添加鼠标悬停事件
+        network.on("hoverNode", function (params) {
+            const nodeId = params.node;
+            const node = nodes.find(n => n.id === nodeId);
+            if (node && node.title) {
+                showTooltip(node.title, params.event);
+            }
+        });
+        
+        network.on("hoverEdge", function (params) {
+            const edgeId = params.edge;
+            const edge = edges.find(e => 
+                e.from === network.body.edges[edgeId].fromId && 
+                e.to === network.body.edges[edgeId].toId
+            );
+            if (edge && edge.title) {
+                showTooltip(edge.title, params.event);
+            }
+        });
+        
+        network.on("blurNode", function (params) {
+            hideTooltip();
+        });
+        
+        network.on("blurEdge", function (params) {
+            hideTooltip();
+        });
+        
+        network.on("dragStart", function (params) {
+            hideTooltip();
+        });
+        
+        function showTooltip(text, event) {
+            // 解析JSON格式的title内容
+            let displayText = text;
+            try {
+                const jsonData = JSON.parse(text);
+                displayText = '';
+                for (const [key, value] of Object.entries(jsonData)) {
+                    displayText += `<strong>${key}:</strong> ${value}<br>`;
+                }
+            } catch (e) {
+                // 如果不是JSON格式，直接显示原文本
+                displayText = text;
+            }
+            
+            tooltip.innerHTML = displayText;
+            tooltip.style.display = 'block';
+            tooltip.style.left = (event.clientX + 15) + 'px';
+            tooltip.style.top = (event.clientY + 15) + 'px';
+        }
+        
+        function hideTooltip() {
+            tooltip.style.display = 'none';
+        }
+        
+        // 鼠标移动时更新tooltip位置
+        container.addEventListener('mousemove', function(event) {
+            if (tooltip.style.display === 'block') {
+                tooltip.style.left = (event.clientX + 15) + 'px';
+                tooltip.style.top = (event.clientY + 15) + 'px';
+            }
+        });
+    </script>
+</body>
+</html>

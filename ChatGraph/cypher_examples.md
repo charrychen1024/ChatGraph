@@ -136,7 +136,7 @@ RETURN p
   - **英文**: Are "Huawei Technologies Co., Ltd." and "SMIC" connected within three degrees through common shareholders or PER_JOBs? Please list all such connection paths.
   - **Cypher**:
 ```
-MATCH p = (c1:Company {name: "华为技术有限公司"}) -[:COMPANY_INVESTMENT｜COM_BRANCH*1..3]- (c2:Company {name: "中芯国际集成电路制造有限公司"})
+MATCH p = (c1:Company {name: "华为技术有限公司"}) -[:COMPANY_INVESTMENT|COM_BRANCH*1..3]- (c2:Company {name: "中芯国际集成电路制造有限公司"})
 RETURN p
 ```
 
@@ -160,7 +160,7 @@ RETURN p
   - **英文**: Which shareholders have invested in both "Company A" and "Company B"?
   - **Cypher**:
 ```
-MATCH (p:Person|Company) -[:COMPANY_INVESTMENT｜PERSON_INVESTMENT]-> (c1:Company {name: "A公司"})
+MATCH (p:Person|Company) -[:COMPANY_INVESTMENT|PERSON_INVESTMENT]-> (c1:Company {name: "A公司"})
 MATCH (p) -[:COMPANY_INVESTMENT|PERSON_INVESTMENT]-> (c2:Company {name: "B公司"})
 RETURN p.name as 共同股东
 ```
