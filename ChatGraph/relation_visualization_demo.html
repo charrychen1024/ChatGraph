@@ -69,7 +69,7 @@
         // 随机选择颜色的函数
         function getRandomNodeColor(type) {
             if (type === 'company') {
-                return {background: '#45B7D1', border: '#1976D2', highlight: {background: '#81D4FA', border: '#0D47A1'}};  // 蓝色系
+                return {background: '#45B7D1', border: '#619FBC', highlight: {background: '#81D4FA', border: '#0D47A1'}};  // 蓝色系
             }if (type === 'person') {
                 return {background: '#FFA726', border: '#FF8F00', highlight: {background: '#FFD54F', border: '#FF6F00'}};  // 黄色系
             } else
@@ -97,7 +97,7 @@
                  "公司ID": 1,
                  "信用代码": "9HGNS31UFR0GP8YW10",
                  "注册资本": 5418.71
-             }), color: getRandomNodeColor('company')},
+             }), color: getRandomNodeColor('company'), widthConstraint: {minimum: 100, maximum: 100}, heightConstraint: {minimum: 100, maximum: 100}, size: 90},
             {id: '101', label: truncateLabel('台湾省咨询有限公司'), type: 'company', 
              title: JSON.stringify({
                  "公司名称": "台湾省咨询有限公司",
@@ -105,7 +105,7 @@
                  "公司ID": 101,
                  "信用代码": "FT3E5JQZR5FJMPZX75",
                  "注册资本": 9700.62
-             }), color: getRandomNodeColor('company')},
+             }), color: getRandomNodeColor('company'), widthConstraint: {minimum: 100, maximum: 100}, heightConstraint: {minimum: 100, maximum: 100}, size: 90},
             {id: '6', label: truncateLabel('上海市教育有限公司'), type: 'company', 
              title: JSON.stringify({
                  "公司名称": "上海市教育有限公司",
@@ -113,7 +113,7 @@
                  "公司ID": 6,
                  "信用代码": "SMJ63JUX1X2VGRA9S6",
                  "注册资本": 2909.94
-             }), color: getRandomNodeColor('company')},
+             }), color: getRandomNodeColor('company'), widthConstraint: {minimum: 100, maximum: 100}, heightConstraint: {minimum: 100, maximum: 100}, size: 90},
             {id: '243', label: truncateLabel('黑龙江省地产集团公司'), type: 'company', 
              title: JSON.stringify({
                  "公司名称": "黑龙江省地产集团公司",
@@ -121,7 +121,7 @@
                  "公司ID": 243,
                  "信用代码": "G2UYX51HULN11XHGGF",
                  "注册资本": 4063.85
-             }), color: getRandomNodeColor('company')},
+             }), color: getRandomNodeColor('company'), widthConstraint: {minimum: 100, maximum: 100}, heightConstraint: {minimum: 100, maximum: 100}, size: 90},
             {id: '44', label: truncateLabel('海南省教育集团公司'), type: 'company', 
              title: JSON.stringify({
                  "公司名称": "海南省教育集团公司",
@@ -129,14 +129,14 @@
                  "公司ID": 44,
                  "信用代码": "SDQHCG4CE069ULAZ9I",
                  "注册资本": 7397.8
-             }), color: getRandomNodeColor('company')},
+             }), color: getRandomNodeColor('company'), widthConstraint: {minimum: 100, maximum: 100}, heightConstraint: {minimum: 100, maximum: 100}, size: 90},
             {id: '44_person', label: truncateLabel('关桂香'), type: 'person', 
              title: JSON.stringify({
                  "姓名": "关桂香",
                  "性别": "女",
                  "年龄": 38,
                  "人员ID": 44
-             }), color: getRandomNodeColor('person')},
+             }), color: getRandomNodeColor('person'), widthConstraint: {minimum: 100, maximum: 100}, heightConstraint: {minimum: 100, maximum: 100}, size: 90},
             {id: '238', label: truncateLabel('浙江省投资集团公司'), type: 'company', 
              title: JSON.stringify({
                  "公司名称": "浙江省投资集团公司",
@@ -144,7 +144,7 @@
                  "公司ID": 238,
                  "信用代码": "VPVR90B52X7MJOG74X",
                  "注册资本": 9176.59
-             }), color: getRandomNodeColor('company')},
+             }), color: getRandomNodeColor('company'), widthConstraint: {minimum: 100, maximum: 100}, heightConstraint: {minimum: 100, maximum: 100}, size: 90},
             {id: '22', label: truncateLabel('河北省贸易合伙企业'), type: 'company', 
              title: JSON.stringify({
                  "公司名称": "河北省贸易合伙企业",
@@ -152,7 +152,7 @@
                  "公司ID": 22,
                  "信用代码": "U8UXWEWFMH7FJWN9DK",
                  "注册资本": 9598.44
-             }), color: getRandomNodeColor('company')},
+             }), color: getRandomNodeColor('company'), widthConstraint: {minimum: 100, maximum: 100}, heightConstraint: {minimum: 100, maximum: 100}, size: 90},
             {id: '2', label: truncateLabel('内蒙古自治区医药股份公司'), type: 'company', 
              title: JSON.stringify({
                  "公司名称": "内蒙古自治区医药股份公司",
@@ -160,7 +160,7 @@
                  "公司ID": 2,
                  "信用代码": "YQIRXJCORYXEWX3MQA",
                  "注册资本": 7434.04
-             }), color: getRandomNodeColor('company')}
+             }), color: getRandomNodeColor('company'), widthConstraint: {minimum: 100, maximum: 100}, heightConstraint: {minimum: 100, maximum: 100}, size: 90}
         ];
 
         // 精简后的边数据
