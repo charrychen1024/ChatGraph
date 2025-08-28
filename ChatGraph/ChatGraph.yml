@@ -1,0 +1,2401 @@
+app:
+  description: 基于Neo4j图库的聊天助手
+  icon: globe_with_meridians
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: ChatGraph
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/siliconflow:0.0.23@da2cc8bd076ff081b0c4f69e6d484e3e1e79bd3ad1d937a9c00d9ffdbc8dd14f
+kind: app
+version: 0.3.1
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - document
+      - image
+      allowed_file_upload_methods:
+      - remote_url
+      - local_file
+      enabled: true
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: 嗨～ 我是专门处理图数据库聊天数据的助手，不管是找关联还是做分析，都能帮上忙，说说您的需求吧？
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions:
+    - 你能做什么？
+    - 图谱中有哪些类型的节点和关系？
+    - 陈建投资了哪些公司？
+    - 他还在哪些公司任职？
+    - 青海省制造集团公司有哪些分支机构？
+    - 江苏省制造有限公司三度以内的投资关系，一共关联出了哪些公司？给出公司名单和完整的路径关系。
+    - 湖北省科技股份公司和陕西省科技股份公司共同股东有哪些？
+    - 查询台湾省医药股份公司、江西省贸易股份公司、黑龙江省医药有限公司两两之间之间是否有关联。
+    - 筛选出注册资本低于1000万，且存在人员同时担任超过2家公司法人或高管的企业
+    - 湖南省制造有限公司的最大股东是谁？
+    suggested_questions_after_answer:
+      enabled: true
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1755592476558-2-1755593666175-target
+      selected: false
+      source: '1755592476558'
+      sourceHandle: '2'
+      target: '1755593666175'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: document-extractor
+      id: 1755593778352-source-1755594255467-target
+      selected: false
+      source: '1755593778352'
+      sourceHandle: source
+      target: '1755594255467'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1755592476558-1755600004813-1755600156378-target
+      selected: false
+      source: '1755592476558'
+      sourceHandle: '1755600004813'
+      target: '1755600156378'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1755593666175-source-1755595309447-target
+      selected: false
+      source: '1755593666175'
+      sourceHandle: source
+      target: '1755595309447'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1755600156378-source-1755600322102-target
+      selected: false
+      source: '1755600156378'
+      sourceHandle: source
+      target: '1755600322102'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1755605975992--1755606154404-target
+      selected: false
+      source: '1755605975992'
+      sourceHandle: source
+      target: '1755606154404'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1755592476558-1755605879822-1755605975992-target
+      selected: false
+      source: '1755592476558'
+      sourceHandle: '1755605879822'
+      target: '1755605975992'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: document-extractor
+        targetType: question-classifier
+      id: 1755594255467-source-1755607024978-target
+      selected: false
+      source: '1755594255467'
+      sourceHandle: source
+      target: '1755607024978'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1755607106139-source-1755607170754-target
+      selected: false
+      source: '1755607106139'
+      sourceHandle: source
+      target: '1755607170754'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1755607024978-2-1755607106139-target
+      selected: false
+      source: '1755607024978'
+      sourceHandle: '2'
+      target: '1755607106139'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        sourceType: loop-start
+        targetType: llm
+      id: 1755762266760start-source-1755762286648-target
+      selected: false
+      source: 1755762266760start
+      sourceHandle: source
+      target: '1755762286648'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        sourceType: llm
+        targetType: parameter-extractor
+      id: 1755762286648-source-1755762431245-target
+      selected: false
+      source: '1755762286648'
+      sourceHandle: source
+      target: '1755762431245'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        sourceType: parameter-extractor
+        targetType: http-request
+      id: 1755762431245-source-1755762498234-target
+      selected: false
+      source: '1755762431245'
+      sourceHandle: source
+      target: '1755762498234'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        sourceType: code
+        targetType: if-else
+      id: 1755762942521-source-1755762799638-target
+      selected: false
+      source: '1755762942521'
+      sourceHandle: source
+      target: '1755762799638'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        sourceType: if-else
+        targetType: assigner
+      id: 1755762799638-false-1755775497774-target
+      selected: false
+      source: '1755762799638'
+      sourceHandle: 'false'
+      target: '1755775497774'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        sourceType: code
+        targetType: template-transform
+      id: 1755762628615-source-1755776187287-target
+      source: '1755762628615'
+      sourceHandle: source
+      target: '1755776187287'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        sourceType: template-transform
+        targetType: code
+      id: 1755776187287-source-1755762942521-target
+      source: '1755776187287'
+      sourceHandle: source
+      target: '1755762942521'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        sourceType: http-request
+        targetType: if-else
+      id: 1755762498234-source-1755776574625-target
+      source: '1755762498234'
+      sourceHandle: source
+      target: '1755776574625'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        sourceType: if-else
+        targetType: code
+      id: 1755776574625-true-1755762628615-target
+      source: '1755776574625'
+      sourceHandle: 'true'
+      target: '1755762628615'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        sourceType: if-else
+        targetType: answer
+      id: 1755776574625-false-1755776606840-target
+      source: '1755776574625'
+      sourceHandle: 'false'
+      target: '1755776606840'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        sourceType: answer
+        targetType: loop-end
+      id: 1755776606840-source-1755777567696-target
+      source: '1755776606840'
+      sourceHandle: source
+      target: '1755777567696'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        sourceType: if-else
+        targetType: assigner
+      id: 1755762799638-true-1755779241201-target
+      source: '1755762799638'
+      sourceHandle: 'true'
+      target: '1755779241201'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        sourceType: assigner
+        targetType: loop-end
+      id: 1755779241201-source-1755772875929-target
+      source: '1755779241201'
+      sourceHandle: source
+      target: '1755772875929'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInLoop: false
+        sourceType: loop
+        targetType: if-else
+      id: 1755762266760-source-1755844856307-target
+      source: '1755762266760'
+      sourceHandle: source
+      target: '1755844856307'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 1755844856307-false-1755844908298-target
+      source: '1755844856307'
+      sourceHandle: 'false'
+      target: '1755844908298'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1755844908298-source-1755844958893-target
+      source: '1755844908298'
+      sourceHandle: source
+      target: '1755844958893'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 1755844856307-true-1755846354283-target
+      source: '1755844856307'
+      sourceHandle: 'true'
+      target: '1755846354283'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: tool
+      id: 1755849084021-source-1755875352005-target
+      source: '1755849084021'
+      sourceHandle: source
+      target: '1755875352005'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: llm
+      id: 1755875352005-source-1755775792331-target
+      source: '1755875352005'
+      sourceHandle: source
+      target: '1755775792331'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1755775792331-source-1755847810128-target
+      source: '1755775792331'
+      sourceHandle: source
+      target: '1755847810128'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: if-else
+      id: 1755846354283-source-1755877602850-target
+      source: '1755846354283'
+      sourceHandle: source
+      target: '1755877602850'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 1755844856307-true-17559194108580-target
+      source: '1755844856307'
+      sourceHandle: 'true'
+      target: '17559194108580'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 17559194108580-source-1755919453968-target
+      source: '17559194108580'
+      sourceHandle: source
+      target: '1755919453968'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1755877602850-true-1755942546418-target
+      source: '1755877602850'
+      sourceHandle: 'true'
+      target: '1755942546418'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: answer
+        targetType: code
+      id: 1755942546418-source-1755849084021-target
+      source: '1755942546418'
+      sourceHandle: source
+      target: '1755849084021'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: list-operator
+        targetType: document-extractor
+      id: 1755944793317-source-1755944371828-target
+      selected: false
+      source: '1755944793317'
+      sourceHandle: source
+      target: '1755944371828'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: question-classifier
+      id: 1755529752312-source-1755592476558-target
+      source: '1755529752312'
+      sourceHandle: source
+      target: '1755592476558'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: list-operator
+        targetType: llm
+      id: 1755944674198-source-1755944963349-target
+      selected: false
+      source: '1755944674198'
+      sourceHandle: source
+      target: '1755944963349'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: document-extractor
+        targetType: llm
+      id: 1755944371828-source-1755944963349-target
+      selected: false
+      source: '1755944371828'
+      sourceHandle: source
+      target: '1755944963349'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: knowledge-retrieval
+      id: 1755592476558-1-1755593778352-target
+      source: '1755592476558'
+      sourceHandle: '1'
+      target: '1755593778352'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: list-operator
+      id: 1755607024978-1-1755944674198-target
+      source: '1755607024978'
+      sourceHandle: '1'
+      target: '1755944674198'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: list-operator
+      id: 1755607024978-1-1755944793317-target
+      source: '1755607024978'
+      sourceHandle: '1'
+      target: '1755944793317'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: loop
+      id: 1755944963349-source-1755762266760-target
+      source: '1755944963349'
+      sourceHandle: source
+      target: '1755762266760'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: database_schema
+          max_length: 48
+          options: []
+          required: true
+          type: file
+          variable: database_schema
+      height: 90
+      id: '1755529752312'
+      position:
+        x: 30
+        y: 372
+      positionAbsolute:
+        x: 30
+        y: 372
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        classes:
+        - id: '1'
+          name: 涉及企业、人员、投资关系、分支机构、职位等图数据库中的实体和关系数据查询，以及对当前图库内的数据结构schema的问题
+        - id: '2'
+          name: 问候、闲聊、天气等无关图数据库查询的问题
+        - id: '1755600004813'
+          name: 对图数据库有修改、删除、清空等危险操作的需求
+        - id: '1755605879822'
+          name: 图数据公开知识，查询语言cypher等学习类的知识问题
+        desc: ''
+        instructions: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        query_variable_selector:
+        - '1755529752312'
+        - sys.query
+        selected: false
+        title: 问题分类器
+        topics: []
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 344
+      id: '1755592476558'
+      position:
+        x: 364
+        y: 372
+      positionAbsolute:
+        x: 364
+        y: 372
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: 84627275-6bf8-4aeb-b2be-dc8f7c103b8f
+          role: system
+          text: 友好地拒绝回复用户闲聊问题，并告知用户你作为图数据库聊天助手的身份，引导用户提出跟图数据查询，企业关系查询相关的问题
+        - id: 7e9fe275-4905-4c7d-8241-745acea4ae48
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: LLM-闲聊
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1755593666175'
+      position:
+        x: 698
+        y: 512.5
+      positionAbsolute:
+        x: 698
+        y: 512.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - CYiD+NzVUK/1tW65brKHwJaQWcFfrEHX0vWhQvqAQPhfRFLIcp9pJTfwOePcTmdG
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: BAAI/bge-reranker-v2-m3
+            provider: langgenius/siliconflow/siliconflow
+          score_threshold: null
+          top_k: 5
+          weights:
+            keyword_setting:
+              keyword_weight: 0
+            vector_setting:
+              embedding_model_name: BAAI/bge-m3
+              embedding_provider_name: langgenius/siliconflow/siliconflow
+              vector_weight: 1
+        query_variable_selector:
+        - '1755529752312'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索
+        type: knowledge-retrieval
+      height: 92
+      id: '1755593778352'
+      position:
+        x: 698
+        y: 372
+      positionAbsolute:
+        x: 698
+        y: 372
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_array_file: false
+        selected: false
+        title: 文档提取器-图schema
+        type: document-extractor
+        variable_selector:
+        - '1755529752312'
+        - database_schema
+      height: 94
+      id: '1755594255467'
+      position:
+        x: 1032
+        y: 372
+      positionAbsolute:
+        x: 1032
+        y: 372
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1755593666175.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复-闲聊
+        type: answer
+        variables: []
+      height: 105
+      id: '1755595309447'
+      position:
+        x: 1032
+        y: 506
+      positionAbsolute:
+        x: 1032
+        y: 506
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: 7957f633-980a-41c3-b3d4-2d833df3de8b
+          role: system
+          text: 严厉制止用户提出关于对图数据库有修改、删除、清空等危险操作的需求，并引导用户提出跟图数据查询，企业关系查询相关的问题
+        - id: 326759ae-6b80-47fa-b3fe-037db44468f8
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: LLM-危险操作
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1755600156378'
+      position:
+        x: 698
+        y: 657.5
+      positionAbsolute:
+        x: 698
+        y: 657.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1755600156378.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复-危险操作
+        type: answer
+        variables: []
+      height: 105
+      id: '1755600322102'
+      position:
+        x: 1032
+        y: 651
+      positionAbsolute:
+        x: 1032
+        y: 651
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: e366fa32-99c6-4c51-8b51-4d0ac12877e8
+          role: system
+          text: 根据你对图数据库，图查询语言的权威知识，回答用户问题
+        - id: 3a89e5f7-09bf-4862-b890-5f6c5ee75bdb
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: LLM-公开知识
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1755605975992'
+      position:
+        x: 698
+        y: 802.5
+      positionAbsolute:
+        x: 698
+        y: 802.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1755605975992.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复-公开知识
+        type: answer
+        variables: []
+      height: 105
+      id: '1755606154404'
+      position:
+        x: 1032
+        y: 796
+      positionAbsolute:
+        x: 1032
+        y: 796
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        classes:
+        - id: '2'
+          name: 图数据结构，图shema的问题
+        - id: '1'
+          name: 具体的数据查询需求
+        desc: ''
+        instructions: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        query_variable_selector:
+        - '1755529752312'
+        - sys.query
+        selected: false
+        title: 问题分类器-是否查询
+        topics: []
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 172
+      id: '1755607024978'
+      position:
+        x: 1366
+        y: 372
+      positionAbsolute:
+        x: 1366
+        y: 372
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1755594255467'
+          - text
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: 00a4acae-3072-440e-95a5-3f86afb6d115
+          role: system
+          text: '根据{{#context#}}的内容，回答用户关于数据结构的问题。
+
+            只需要针对具体问题提炼出答案，不需要给出无关的信息。
+
+            必要的时候，生成mermaid流程图可视化展示图数据结构。'
+        - id: cae0b764-e9de-4dce-94cc-2db575032f6b
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: LLM-schema问答
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1755607106139'
+      position:
+        x: 1700
+        y: 372
+      positionAbsolute:
+        x: 1700
+        y: 372
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1755607106139.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复 -schema问答
+        type: answer
+        variables: []
+      height: 105
+      id: '1755607170754'
+      position:
+        x: 2034
+        y: 372
+      positionAbsolute:
+        x: 2034
+        y: 372
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        break_conditions: []
+        desc: ''
+        error_handle_mode: terminated
+        height: 411
+        logical_operator: and
+        loop_count: 3
+        loop_variables:
+        - id: f088ba3f-4046-462b-a84b-8bb57088d363
+          label: error_info
+          value: ' '
+          value_type: constant
+          var_type: string
+        - id: d6ef705c-a93a-4762-a5ee-080d66984c34
+          label: succ_result
+          value: '  '
+          value_type: constant
+          var_type: string
+        - id: eb7ab1e9-ceff-4a9e-99a4-9b4995e01390
+          label: cypher
+          value: ' '
+          value_type: constant
+          var_type: string
+        selected: false
+        start_node_id: 1755762266760start
+        title: 循环
+        type: loop
+        width: 3524
+      height: 411
+      id: '1755762266760'
+      position:
+        x: 2702
+        y: 511.5
+      positionAbsolute:
+        x: 2702
+        y: 511.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 3524
+      zIndex: 1
+    - data:
+        desc: ''
+        isInLoop: true
+        selected: false
+        title: ''
+        type: loop-start
+      draggable: false
+      height: 48
+      id: 1755762266760start
+      parentId: '1755762266760'
+      position:
+        x: 60
+        y: 105.5
+      positionAbsolute:
+        x: 2762
+        y: 617
+      selectable: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-loop-start
+      width: 44
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: 756e32fe-1e0d-4c11-9536-de7966062b6b
+          role: system
+          text: "你是一个专业的Neo4j图数据库分析助手。你的任务是根据用户的自然语言查询，生成对应的Cypher查询语句。\n查询需求理解：\n\
+            1. 准确判断用户输入或文档里提取的是公司名称、统一社会信用代码、人名，公司id，人员id等查询主体\n2. 不同的查询主体和查询元素，需要使用图schema中正确的属性字段对应\n\
+            3. 判断用户是否指定了特定的查询主体，如果没有指定，并且查询的是明细数据，则在查询语句中增加返回的条数限制，如limit 20\n4. 股东包括自然人股东和公司股东，如果没有指定哪些类型的股东，则两种类型股东都要进行查询\n\
+            \n你需要严格遵守以下规则：\n1. 仅输出Cypher查询语句，不要包含任何解释性文字。\n2. 你的输出必须是合法的、可执行的Cypher。\n\
+            3. 如果用户查询包含“可视化”或“显示路径”等意图，请确保你的查询结果包含节点ID、关系和路径信息。\n4. 示例：\n   - 用户输入：找出所有叫“李华”的人。\n\
+            \   - 你的输出：MATCH (n:Person {name: '李华'}) RETURN n\n   - 用户输入：查找“李华”的朋友，并显示他们之间的关系。\n\
+            \   - 你的输出：MATCH p = (n:Person {name: '李华'})-[r:FRIEND_OF]-(f:Person)\
+            \ RETURN n, r, f, p\n5. cypher中尽量完整地返回节点、关系、路径所有信息，包含属性信息\n6. 如果此前生成的cypher查询报错，请根据报错信息分析报错原因，并重新生成正确的cypher\n\
+            \n## 注意\n- 仔细理解图数据库schema：{{#1755594255467.text#}}，确保生成的cypher符合当前图库数据结构设计，不能出现当前图库schema以外类型的点和边\n\
+            - Cypher参考语句：{{#context#}}\n- 当用户没有指定查询关联深度，cypher中关系查询的最大深度不能超过3层\n-\
+            \ 当用户指定了查询深度，如果深度超过了3层，生成的cypher也不能超过3层深度关系查询\n\n## 限制\n- 严禁输出drop, truncate,\
+            \ delete，alter，set之类的cypher语句\n- 禁止使用apoc，call语法\n- 每次查询只生成一条cypher\n\
+            - 直接输出cypher文本内容，不要包裹markdown中以及任何markdown字符"
+        - id: 091f0ece-f001-4440-83f2-ee13e106bc4c
+          role: user
+          text: '用户查询：{{#sys.query#}}
+
+            文档里的查询主体信息：{{#1755944963349.text#}}
+
+            报错信息：{{#1755762266760.error_info#}}'
+        selected: false
+        title: LLM-生成cypher
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1755762286648'
+      parentId: '1755762266760'
+      position:
+        x: 204
+        y: 84.5
+      positionAbsolute:
+        x: 2906
+        y: 596
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        parameters:
+        - description: 完整地提取cypher语句
+          name: cypher
+          required: false
+          type: string
+        query:
+        - '1755762286648'
+        - text
+        reasoning_mode: prompt
+        selected: false
+        title: 参数提取器-提取cypher
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1755762431245'
+      parentId: '1755762266760'
+      position:
+        x: 508
+        y: 84.5
+      positionAbsolute:
+        x: 3210
+        y: 596
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-425
+            key: ''
+            type: text
+            value: '''{"statements":[{"statement":"{{#1755762431245.cypher#}}"}]}'''
+          type: json
+        desc: ''
+        headers: 'Authorization:Basic bmVvNGo6Y2pyMTIzNDU2
+
+          Content-Type:application/json'
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        method: POST
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求-提交查询
+        type: http-request
+        url: http://192.168.3.84:7474/db/neo4j/tx/commit
+        variables: []
+      height: 140
+      id: '1755762498234'
+      parentId: '1755762266760'
+      position:
+        x: 812
+        y: 60
+      positionAbsolute:
+        x: 3514
+        y: 571.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        code: "import json \n\n\ndef parse_neo4j_response_to_json(response_body):\n\
+          \    \"\"\"\n    解析Neo4j返回的JSON结果，提取数据并转换为列表字典格式\n\n    参数:\n        response_body:\
+          \ Neo4j返回的JSON数据（字典形式）\n\n    返回:\n        list: 包含字典的列表，每个字典对应一条记录\n  \
+          \  \"\"\"\n\n    # 如果是字符串则解析为字典\n    if isinstance(response_body, str):\n\
+          \        data = json.loads(response_body)\n    else:\n        data = response_body\n\
+          \n    # 提取数据\n    results = data.get('results', [])\n\n    # 如果结果有报错，返回报错信息\n\
+          \    if not results:\n        return data.get('errors', None)\n\n    # 获取第一个结果集的数据\n\
+          \    result_data = results[0].get('data', [])\n    columns = results[0].get('columns',\
+          \ [])\n\n    # 初始化结果列表\n    result_list = []\n\n    # 遍历每一行数据\n    for row_data\
+          \ in result_data:\n        # 创建当前行的字典\n        row_dict = {}\n        #\
+          \ 将列名与对应的值关联起来\n        for i, column in enumerate(columns):\n         \
+          \   row_dict[column] = row_data[\"row\"][i]\n        # 添加到结果列表\n       \
+          \ result_list.append(row_dict)\n\n    return result_list\n\n\ndef main(arg:\
+          \ str) -> dict:\n    result = parse_neo4j_response_to_json(arg)\n    return\
+          \ {\n        \"result\": str(result)\n    }"
+        code_language: python3
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 代码执行-提取查询结果
+        type: code
+        variables:
+        - value_selector:
+          - '1755762498234'
+          - body
+          value_type: string
+          variable: arg
+      height: 54
+      id: '1755762628615'
+      parentId: '1755762266760'
+      position:
+        x: 1420
+        y: 102.5
+      positionAbsolute:
+        x: 4122
+        y: 614
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: '='
+            id: 616c8ea4-c28e-4454-9ef1-d50e182a51c7
+            value: '1'
+            varType: number
+            variable_selector:
+            - '1755762942521'
+            - result
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 126
+      id: '1755762799638'
+      parentId: '1755762266760'
+      position:
+        x: 2332
+        y: 66.5
+      positionAbsolute:
+        x: 5034
+        y: 578
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        code: "\ndef main(response_body: str) -> dict:\n    \n    # 如果是字符串则解析为字典\n\
+          \    if isinstance(response_body, str):\n        data = json.loads(response_body)\n\
+          \    else:\n        data = response_body\n\n    # 提取数据\n    results = data.get('results',\
+          \ [])\n\n    # 查询成功返回1，报错返回0\n    if not results:\n        result = 0\n\
+          \    else:\n        result = 1\n\n    return {\n        \"result\": result\n\
+          \    }\n"
+        code_language: python3
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        outputs:
+          result:
+            children: null
+            type: number
+        selected: false
+        title: 代码执行-判断查询状态
+        type: code
+        variables:
+        - value_selector:
+          - '1755762498234'
+          - body
+          value_type: string
+          variable: response_body
+      height: 54
+      id: '1755762942521'
+      parentId: '1755762266760'
+      position:
+        x: 2028
+        y: 102.5
+      positionAbsolute:
+        x: 4730
+        y: 614
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        selected: false
+        title: 退出循环
+        type: loop-end
+      height: 54
+      id: '1755772875929'
+      parentId: '1755762266760'
+      position:
+        x: 2940
+        y: 254.5
+      positionAbsolute:
+        x: 5642
+        y: 766
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-simple
+      width: 244
+      zIndex: 1002
+    - data:
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1755776187287'
+          - output
+          variable_selector:
+          - '1755762266760'
+          - error_info
+          write_mode: over-write
+        loop_id: '1755762266760'
+        selected: false
+        title: 变量赋值
+        type: assigner
+        version: '2'
+      height: 86
+      id: '1755775497774'
+      parentId: '1755762266760'
+      position:
+        x: 2636
+        y: 86.5
+      positionAbsolute:
+        x: 5338
+        y: 598
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: 2ee87376-f9e4-4ff8-ba4d-c21d1265b3d9
+          role: system
+          text: "1. 请严格根据以下步骤处理输入内容：\n   - 首先检查输入文本中是否存在关系网络可视化HTML的URL链接（以http://或https://开头）\n\
+            \   - 若检测到有效URL，执行步骤2；否则执行步骤3\n\n2. 当存在有效URL时的处理规范：\n   - 使用Markdown语法创建超链接，格式必须为：[点击查看关系网络](URL)\n\
+            \   - 必须遵守以下排版要求：\n     * 超链接必须独占一行\n     * 超链接与前段内容保持一个空行间距\n   - 绝对禁止将结果包含在任何代码块标记内（如```）\n\
+            \   - 回复前请清除上一个回复的markdown标记\n\n3. 无有效URL时的处理规范：\n   - 输出\"暂无可视化关系网络\"\
+            纯文本\n   - 该提示必须独占一行\n   - 与前段内容保持一个空行间距\n\n4. 通用要求：\n   - 最终输出严禁出现任何XML标签\n\
+            \   - 可视化链接模块必须独立于其他Markdown代码块（特别是CYPHER代码块）\n   - 所有输出内容应为纯Markdown格式\n\
+            \n特别注意：\n- 为确保可点击性，可视化链接模块需与其他Markdown代码保持明确分离\n- URL检测需严格区分有效网页链接与其他文本\n"
+        - id: 4a07474a-de94-4864-b188-6998fca4a396
+          role: user
+          text: '可视化html链接：{{#1755875352005.text#}}
+
+            '
+        selected: false
+        title: LLM-嵌入url
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1755775792331'
+      position:
+        x: 8411
+        y: 839
+      positionAbsolute:
+        x: 8411
+        y: 839
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        selected: false
+        template: '{{ arg }}'
+        title: 模板转换 -结果转string
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1755762628615'
+          - result
+          value_type: array[object]
+          variable: arg
+      height: 54
+      id: '1755776187287'
+      parentId: '1755762266760'
+      position:
+        x: 1724
+        y: 102.5
+      positionAbsolute:
+        x: 4426
+        y: 614
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: '='
+            id: 84d3094a-bd4c-4f75-af7b-53324f6353a3
+            value: '200'
+            varType: number
+            variable_selector:
+            - '1755762498234'
+            - status_code
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        selected: false
+        title: 条件分支-请求状态
+        type: if-else
+      height: 126
+      id: '1755776574625'
+      parentId: '1755762266760'
+      position:
+        x: 1116
+        y: 66.5
+      positionAbsolute:
+        x: 3818
+        y: 578
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        answer: '{{#1755762498234.body#}}'
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 105
+      id: '1755776606840'
+      parentId: '1755762266760'
+      position:
+        x: 1420
+        y: 196.5
+      positionAbsolute:
+        x: 4122
+        y: 708
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1755762266760'
+        selected: false
+        title: 退出循环 2
+        type: loop-end
+      height: 54
+      id: '1755777567696'
+      parentId: '1755762266760'
+      position:
+        x: 1724
+        y: 222
+      positionAbsolute:
+        x: 4426
+        y: 733.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-simple
+      width: 244
+      zIndex: 1002
+    - data:
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1755776187287'
+          - output
+          variable_selector:
+          - '1755762266760'
+          - succ_result
+          write_mode: over-write
+        - input_type: variable
+          operation: clear
+          value: ''
+          variable_selector:
+          - '1755762266760'
+          - error_info
+          write_mode: over-write
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1755762431245'
+          - cypher
+          variable_selector:
+          - '1755762266760'
+          - cypher
+          write_mode: over-write
+        loop_id: '1755762266760'
+        selected: false
+        title: 变量赋值 2
+        type: assigner
+        version: '2'
+      height: 138
+      id: '1755779241201'
+      parentId: '1755762266760'
+      position:
+        x: 2636
+        y: 212.5
+      positionAbsolute:
+        x: 5338
+        y: 724
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: empty
+            id: d8797c49-df58-4857-a0ad-c651ea2df488
+            value: ''
+            varType: string
+            variable_selector:
+            - '1755762266760'
+            - error_info
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支-循环状态
+        type: if-else
+      height: 126
+      id: '1755844856307'
+      position:
+        x: 6316
+        y: 511.5
+      positionAbsolute:
+        x: 6316
+        y: 511.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: 48ad4999-4a14-489d-9bb3-4becc8eb9c52
+          role: system
+          text: "作为图数据库和数据分析专家，你需要根据用户的问题和查询结果，提供专业的回答。以下是具体步骤：\n\n1. **处理查询结果**：\n\
+            \   - 如果查询成功但返回结果为空，明确告知用户“没有找到相关信息”。\n   - 如果查询失败并返回错误信息，解释错误原因（如语法错误、节点不存在等），并引导用户提供更清晰的查询需求。如果报错信息为空，说明没有报错。\n\
+            \   - 如果查询结果包含多个实体和关系（如投资关系、分支机构关系、人员关系等），在回答中清晰地描述这些关系。如果涉及路径信息，需详细描述路径关系。\n\
+            \   - 不管是否查询成功，都在回答末尾用Markdown语法附上生成的Cypher查询语句\n   - 如果用户查询没有指定深度，或者指定的查询深度超过3层，则提醒用户你最大支持3层查询\n\
+            \n2. **可视化关系网络图**：\n   - 当结果包含关联关系与路径时，在回答后添加关系网络图（以文字、mermaid代码流程图可视化表示）。\n\
+            \n3. **语言要求**：\n   - 使用自然语言回答，避免技术术语（除非用户明确要求）。\n   - 所有输出内容不得包含任何XML标签。\n"
+        - role: user
+          text: '报错信息：{{#1755762266760.error_info#}}
+
+            查询语句：{{#1755762266760.cypher#}}'
+        selected: false
+        title: LLM-报错输出
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1755844908298'
+      position:
+        x: 7409
+        y: 511.5
+      positionAbsolute:
+        x: 7409
+        y: 511.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1755844908298.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 105
+      id: '1755844958893'
+      position:
+        x: 7743
+        y: 511.5
+      positionAbsolute:
+        x: 7743
+        y: 511.5
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: 130748a8-2324-41a7-87b1-91c4ddd40512
+          role: system
+          text: "根据提供的cypher查询结果和html模板，你需要完成以下任务：\n\n1. 解析cypher查询结果，识别出包含的节点和关系数据\n\
+            2. 从html模板中提取出nodes和edges数组所在的代码段\n3. 根据cypher结果中的实际数据替换模板中的节点和边数据：\n\
+            \   - 对于节点数据，需要包含id、label、type、title等属性\n   - 对于边数据，需要包含from、to、arrows、label、title等属性\n\
+            \   - 如果边数据包含了关系类型，也必须提取，并作为第一个展示的字段\n   - 请保持每个边的展示字段是相同的，也就是第一个字段要么都是关系类型，要么都是其他相同的数据含义，比如投资比例\n\
+            \   - 节点里的company_id和person_id可以作为数据的id，不要自己重新生成id。只有当数据中没有返回id类的字段时候，需要自己生成id，但是不要放到展示的属性json当中，以免误导用户。\n\
+            \   - 你需要结合实际查询的cypher和查询返回的结果，推断出节点和关系的属性，比如id，label，from, to\n   - 保持模板中原有的颜色、大小等样式设定不变\n\
+            4. 如果cypher查询没有返回任何结果，只需输出\"none\"\n5. 最终的输出只需包含修改后的nodes和edges数组的JavaScript代码部分，用markdown格式返回\n\
+            \n步骤如下：\n1. 检查cypher查询结果是否为空\n2. 如果结果非空，提取所有节点和关系\n3. 为每个节点创建对应的数据对象，保持原有样式设置\n\
+            4. 为每条关系创建对应的边数据对象\n5. 将所有节点数据组装到nodes数组中\n6. 将所有关系数据组装到edges数组中\n7. 确保title属性是有效的JSON字符串格式\n\
+            8. 返回修改后的nodes和edges数组代码\n\n注意事项：\n- 不要修改除了节点和边数据内容以外的任何代码\n- 保持原有颜色函数调用不变\n\
+            - 如果某种数据不存在，对应的数组应为空\n- 不要包含任何XML标签\n- 输出格式为markdown代码块\n- 直接输出代码，不要加任何前言和结尾的文字说明\n\
+            \nHTML模板如下（部分代码，重点关注nodes和edges的数据部分）：\n```html\n<!DOCTYPE html>\n<html>\n\
+            <head>\n    <meta charset=\"utf-8\">\n    <title>节点关系图</title>\n    <script\
+            \ type=\"text/javascript\" src=\"https://unpkg.com/vis-network/standalone/umd/vis-network.min.js\"\
+            ></script>\n    <link href=\"https://unpkg.com/vis-network/styles/vis-network.min.css\"\
+            \ rel=\"stylesheet\" type=\"text/css\" />\n    <style>\n\n        // 创建节点和边数据\n\
+            \        function truncateLabel(label, maxLength = 8) {\n            if\
+            \ (label.length > maxLength) {\n                return label.substring(0,\
+            \ maxLength) + '...';\n            }\n            return label;\n    \
+            \    }\n        \n        // 节点数据\n        const nodes = [\n         \
+            \   {id: '1', label: truncateLabel('江苏省制造有限公司'), type: 'company', \n \
+            \            title: JSON.stringify({\n                 \"公司名称\": \"江苏省制造有限公司\"\
+            ,\n                 \"注册日期\": \"2015-08-21\",\n                 \"公司ID\"\
+            : 1,\n                 \"信用代码\": \"9HGNS31UFR0GP8YW10\",\n           \
+            \      \"注册资本\": 5418.71\n             }), color: getRandomNodeColor('company'),\
+            \ widthConstraint: {minimum: 100, maximum: 100}, heightConstraint: {minimum:\
+            \ 100, maximum: 100}, size: 90},\n            {id: '101', label: truncateLabel('台湾省咨询有限公司'),\
+            \ type: 'company', \n             title: JSON.stringify({\n          \
+            \       \"公司名称\": \"台湾省咨询有限公司\",\n                 \"注册日期\": \"2004-12-12\"\
+            ,\n                 \"公司ID\": 101,\n                 \"信用代码\": \"FT3E5JQZR5FJMPZX75\"\
+            ,\n                 \"注册资本\": 9700.62\n             }), color: getRandomNodeColor('company'),\
+            \ widthConstraint: {minimum: 100, maximum: 100}, heightConstraint: {minimum:\
+            \ 100, maximum: 100}, size: 90},\n            {id: '6', label: truncateLabel('上海市教育有限公司'),\
+            \ type: 'company', \n             title: JSON.stringify({\n          \
+            \       \"公司名称\": \"上海市教育有限公司\",\n                 \"注册日期\": \"2023-02-03\"\
+            ,\n                 \"公司ID\": 6,\n                 \"信用代码\": \"SMJ63JUX1X2VGRA9S6\"\
+            ,\n                 \"注册资本\": 2909.94\n             }), color: getRandomNodeColor('company'),\
+            \ widthConstraint: {minimum: 100, maximum: 100}, heightConstraint: {minimum:\
+            \ 100, maximum: 100}, size: 90}\n        ];\n\n        // 边数据\n      \
+            \  const edges = [\n            {from: '1', to: '101', arrows: {to: true},\
+            \ label: '31%', \n             title: JSON.stringify({\n             \
+            \    \"投资比例\": \"31%\",\n                 \"投资日期\": \"2022-06-11\"\n \
+            \            }), color: getRandomEdgeColor()},\n            {from: '101',\
+            \ to: '6', arrows: {to: true}, label: '8%', \n             title: JSON.stringify({\n\
+            \                 \"投资比例\": \"8%\",\n                 \"投资日期\": \"2022-12-14\"\
+            \n             }), color: getRandomEdgeColor()}\n        ];\n    </script>\n\
+            </body>\n</html>\n```"
+        - id: 8610629f-7bc2-4308-b35a-da85ac6c4070
+          role: user
+          text: '查询cypher：{{#1755762266760.cypher#}}
+
+            cypher查询结果：{{#1755762266760.succ_result#}}
+
+            '
+        selected: false
+        title: LLM-生成点边html
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1755846354283'
+      position:
+        x: 6741
+        y: 839
+      positionAbsolute:
+        x: 6741
+        y: 839
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '
+
+          {{#1755775792331.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 105
+      id: '1755847810128'
+      position:
+        x: 8745
+        y: 839
+      positionAbsolute:
+        x: 8745
+        y: 839
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import json\n\ndef main(arg: str) -> dict:\n    data = arg.replace(\"\
+          ```\", \"\").replace(\"javascript\", \"\")\n    html = f\"\"\"\n       \
+          \ <!DOCTYPE html>\n<html>\n<head>\n    <meta charset=\"utf-8\">\n    <title>节点关系图</title>\n\
+          \    <script type=\"text/javascript\" src=\"https://unpkg.com/vis-network/standalone/umd/vis-network.min.js\"\
+          ></script>\n    <link href=\"https://unpkg.com/vis-network/styles/vis-network.min.css\"\
+          \ rel=\"stylesheet\" type=\"text/css\" />\n    <style>\n        #network-container\
+          \ {{\n            width: 100%;\n            height: 100vh;\n           \
+          \ border: 1px solid #ccc;\n            background: linear-gradient(135deg,\
+          \ #f5f7fa 0%, #e4edf5 100%);\n        }}\n        \n        .tooltip {{\n\
+          \            position: absolute;\n            background-color: rgba(255,\
+          \ 255, 255, 0.95);\n            border: 1px solid #6c9eec;\n           \
+          \ padding: 10px 15px;\n            border-radius: 8px;\n            box-shadow:\
+          \ 0 6px 16px rgba(0,0,0,0.2);\n            pointer-events: none;\n     \
+          \       z-index: 1000;\n            font-size: 14px;\n            font-family:\
+          \ 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n            color: #333;\n\
+          \            backdrop-filter: blur(4px);\n        }}\n        \n       \
+          \ /* 节点标签省略号样式 */\n        .vis-label {{\n            white-space: nowrap;\n\
+          \            overflow: hidden;\n            text-overflow: ellipsis;\n \
+          \           max-width: 100%;\n        }}\n    </style>\n</head>\n<body>\n\
+          \    <div id=\"network-container\"></div>\n    <div id=\"tooltip\" class=\"\
+          tooltip\" style=\"display: none;\"></div>\n\n    <script>\n        // 预定义颜色数组\n\
+          \        const nodeColors = [\n            {{background: '#FF6B6B', border:\
+          \ '#D32F2F', highlight: {{background: '#FF8A80', border: '#B71C1C'}}}},\
+          \  // 红色系\n            {{background: '#4ECDC4', border: '#009688', highlight:\
+          \ {{background: '#80E6DE', border: '#00796B'}}}},  // 青色系\n            {{background:\
+          \ '#45B7D1', border: '#1976D2', highlight: {{background: '#81D4FA', border:\
+          \ '#0D47A1'}}}},  // 蓝色系\n            {{background: '#FFBE0B', border: '#FF8F00',\
+          \ highlight: {{background: '#FFD54F', border: '#E65100'}}}},  // 黄色系\n \
+          \           {{background: '#9B5DE5', border: '#7B1FA2', highlight: {{background:\
+          \ '#CE93D8', border: '#4A148C'}}}},  // 紫色系\n            {{background: '#00BB9D',\
+          \ border: '#00796B', highlight: {{background: '#4DB6AC', border: '#004D40'}}}},\
+          \  // 绿色系\n            {{background: '#F15BB5', border: '#C2185B', highlight:\
+          \ {{background: '#F48FB1', border: '#880E4F'}}}},  // 粉色系\n            {{background:\
+          \ '#00BBF9', border: '#0288D1', highlight: {{background: '#81D4FA', border:\
+          \ '#01579B'}}}}   // 天蓝色系\n        ];\n        \n        const edgeColors\
+          \ = [\n            {{color: '#D32F2F', highlight: '#FFCDD2'}},  // 红色系\n\
+          \            {{color: '#009688', highlight: '#B2DFDB'}},  // 青色系\n     \
+          \       {{color: '#1976D2', highlight: '#BBDEFB'}},  // 蓝色系\n          \
+          \  {{color: '#FF8F00', highlight: '#FFE0B2'}},  // 黄色系\n            {{color:\
+          \ '#7B1FA2', highlight: '#E1BEE7'}},  // 紫色系\n            {{color: '#00796B',\
+          \ highlight: '#B2DFDB'}},  // 绿色系\n            {{color: '#C2185B', highlight:\
+          \ '#F8BBD0'}},  // 粉色系\n            {{color: '#0288D1', highlight: '#BBDEFB'}},\
+          \  // 天蓝色系\n            {{color: '#757575', highlight: '#E0E0E0'}}   //\
+          \ 灰色系\n        ];\n\n        // 随机选择颜色的函数\n        function getRandomNodeColor(type)\
+          \ {{\n            if (type === 'company') {{\n                return {{background:\
+          \ '#45B7D1', border: '#619FBC', highlight: {{background: '#81D4FA', border:\
+          \ '#0D47A1'}}}};  // 蓝色系\n            }}if (type === 'person') {{\n    \
+          \            return {{background: '#FFA726', border: '#FF8F00', highlight:\
+          \ {{background: '#FFD54F', border: '#FF6F00'}}}};  // 黄色系\n            }}\
+          \ else\n                return {{background: '#FF1744', border: '#D50000',\
+          \ highlight: {{background: '#FF4081', border: '#C2185B'}}}};       \n  \
+          \      }}\n        \n        function getRandomEdgeColor() {{\n        \
+          \    return {{color: '#757575', highlight: '#E0E0E0'}};\n        }}\n\n\
+          \        // 创建节点和边数据\n        function truncateLabel(label, maxLength =\
+          \ 8) {{\n            if (label.length > maxLength) {{\n                return\
+          \ label.substring(0, maxLength) + '...';\n            }}\n            return\
+          \ label;\n        }}\n        \n        {data}\n\n        // 创建网络图\n   \
+          \     const container = document.getElementById('network-container');\n\
+          \        const tooltip = document.getElementById('tooltip');\n        const\
+          \ data = {{\n            nodes: nodes,\n            edges: edges\n     \
+          \   }};\n        const options = {{\n            physics: {{\n         \
+          \       enabled: true,\n                stabilization: {{ iterations: 150\
+          \ }},\n                solver: 'repulsion',\n                repulsion:\
+          \ {{\n                    nodeDistance: 200,\n                    centralGravity:\
+          \ 0.1,\n                    springLength: 300,\n                    springConstant:\
+          \ 0.05\n                }}\n            }},\n            nodes: {{\n   \
+          \             borderWidth: 3,\n                font: {{ \n             \
+          \       color: '#ffffff',\n                    size: 24,\n             \
+          \       face: 'Segoe UI',\n                    bold: {{\n              \
+          \          color: '#ffffff',\n                        size: 22\n       \
+          \             }}\n                }},\n                shape: 'circle',\n\
+          \                size: 90,\n                scaling: {{\n              \
+          \      label: {{\n                        enabled: false\n             \
+          \       }}\n                }},\n                chosen: {{\n          \
+          \          node: function(values, id, selected, hovering) {{\n         \
+          \               values.shadow = true;\n                        values.shadowColor\
+          \ = 'rgba(0,0,0,0.2)';\n                        values.shadowSize = 15;\n\
+          \                        values.shadowX = 0;\n                        values.shadowY\
+          \ = 0;\n                    }}\n                }},\n                widthConstraint:\
+          \ {{\n                    maximum: 170\n                }},\n          \
+          \      title: undefined  // 禁用节点默认title\n            }},\n            edges:\
+          \ {{\n                font: {{ \n                    size: 16,\n       \
+          \             color: '#444',\n                    background: 'rgba(255,\
+          \ 255, 255, 0.8)',\n                    strokeWidth: 2,\n              \
+          \      strokeColor: '#ffffff'\n                }},\n                arrows:\
+          \ {{\n                    to: {{enabled: true, scaleFactor: 1.2, type: 'arrow'}}\n\
+          \                }},\n                smooth: {{\n                    enabled:\
+          \ true,\n                    type: \"dynamic\",\n                    roundness:\
+          \ 0.5\n                }},\n                width: 3,\n                chosen:\
+          \ {{\n                    edge: function(values, id, selected, hovering)\
+          \ {{\n                        values.shadow = true;\n                  \
+          \      values.shadowColor = 'rgba(0,0,0,0.2)';\n                       \
+          \ values.shadowSize = 10;\n                        values.shadowX = 0;\n\
+          \                        values.shadowY = 0;\n                    }}\n \
+          \               }},\n                widthConstraint: {{\n             \
+          \       maximum: 150\n                }},\n                title: undefined\
+          \  // 禁用边默认title\n            }},\n            interaction: {{\n       \
+          \         hover: true,\n                tooltipDelay: 100000  // 设置极大延迟，实际禁用默认tooltip\n\
+          \            }}\n        }};\n        \n        const network = new vis.Network(container,\
+          \ data, options);\n        \n        // 禁用默认tooltip显示\n        network.on(\"\
+          beforeDrawing\", function (ctx) {{\n            // 确保不显示默认的title tooltip\n\
+          \        }});\n        \n        // 添加鼠标悬停事件\n        network.on(\"hoverNode\"\
+          , function (params) {{\n            const nodeId = params.node;\n      \
+          \      const node = nodes.find(n => n.id === nodeId);\n            if (node\
+          \ && node.title) {{\n                showTooltip(node.title, params.event);\n\
+          \            }}\n        }});\n        \n        network.on(\"hoverEdge\"\
+          , function (params) {{\n            const edgeId = params.edge;\n      \
+          \      const edge = edges.find(e => \n                e.from === network.body.edges[edgeId].fromId\
+          \ && \n                e.to === network.body.edges[edgeId].toId\n      \
+          \      );\n            if (edge && edge.title) {{\n                showTooltip(edge.title,\
+          \ params.event);\n            }}\n        }});\n        \n        network.on(\"\
+          blurNode\", function (params) {{\n            hideTooltip();\n        }});\n\
+          \        \n        network.on(\"blurEdge\", function (params) {{\n     \
+          \       hideTooltip();\n        }});\n        \n        network.on(\"dragStart\"\
+          , function (params) {{\n            hideTooltip();\n        }});\n     \
+          \   \n        function showTooltip(text, event) {{\n            // 解析JSON格式的title内容\n\
+          \            let displayText = text;\n            try {{\n             \
+          \   const jsonData = JSON.parse(text);\n                displayText = '';\n\
+          \                for (const [key, value] of Object.entries(jsonData)) {{\n\
+          \                    displayText += `<strong>${{key}}:</strong> ${{value}}<br>`;\n\
+          \                }}\n            }} catch (e) {{\n                // 如果不是JSON格式，直接显示原文本\n\
+          \                displayText = text;\n            }}\n            \n   \
+          \         tooltip.innerHTML = displayText;\n            tooltip.style.display\
+          \ = 'block';\n            tooltip.style.left = (event.clientX + 15) + 'px';\n\
+          \            tooltip.style.top = (event.clientY + 15) + 'px';\n        }}\n\
+          \        \n        function hideTooltip() {{\n            tooltip.style.display\
+          \ = 'none';\n        }}\n        \n        // 鼠标移动时更新tooltip位置\n       \
+          \ container.addEventListener('mousemove', function(event) {{\n         \
+          \   if (tooltip.style.display === 'block') {{\n                tooltip.style.left\
+          \ = (event.clientX + 15) + 'px';\n                tooltip.style.top = (event.clientY\
+          \ + 15) + 'px';\n            }}\n        }});\n    </script>\n</body>\n\
+          </html>\n    \"\"\"\n    return {\n        \"result\": html\n    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 代码执行-生成完整html
+        type: code
+        variables:
+        - value_selector:
+          - '1755846354283'
+          - text
+          value_type: string
+          variable: arg
+      height: 54
+      id: '1755849084021'
+      position:
+        x: 7743
+        y: 864.5
+      positionAbsolute:
+        x: 7743
+        y: 864.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        default_value:
+        - key: text
+          type: string
+          value: 没有成功生成公网url链接
+        - key: json
+          type: array[object]
+          value: '[]'
+        desc: ''
+        error_strategy: default-value
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: 'Provide the full HTML markup you wish to publish.
+
+              After deployment, the system will generate and return a public URL where
+              your content can be accessed.'
+            ja_JP: 'Provide the full HTML markup you wish to publish.
+
+              After deployment, the system will generate and return a public URL where
+              your content can be accessed.'
+            pt_BR: 'Provide the full HTML markup you wish to publish.
+
+              After deployment, the system will generate and return a public URL where
+              your content can be accessed.'
+            zh_Hans: 'Provide the full HTML markup you wish to publish.
+
+              After deployment, the system will generate and return a public URL where
+              your content can be accessed.'
+          label:
+            en_US: value
+            ja_JP: value
+            pt_BR: value
+            zh_Hans: value
+          llm_description: 'Provide the full HTML markup you wish to publish.
+
+            After deployment, the system will generate and return a public URL where
+            your content can be accessed.'
+          max: null
+          min: null
+          name: value
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        params:
+          value: ''
+        provider_id: edgeone
+        provider_name: edgeOne
+        provider_type: mcp
+        retry_config:
+          max_retries: 2
+          retry_enabled: true
+          retry_interval: 1000
+        selected: false
+        title: deploy_html
+        tool_configurations: {}
+        tool_description: Deploy HTML content to EdgeOne Pages, return the public
+          URL
+        tool_label: deploy_html
+        tool_name: deploy_html
+        tool_node_version: '2'
+        tool_parameters:
+          value:
+            type: mixed
+            value: '{{#1755849084021.result#}}'
+        type: tool
+      height: 152
+      id: '1755875352005'
+      position:
+        x: 8077
+        y: 839
+      positionAbsolute:
+        x: 8077
+        y: 839
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is not
+            id: 3522be0e-31bd-4f16-b125-9e4a9f0f0754
+            value: none
+            varType: string
+            variable_selector:
+            - '1755846354283'
+            - text
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支-是否有点边数据
+        type: if-else
+      height: 126
+      id: '1755877602850'
+      position:
+        x: 7075
+        y: 821
+      positionAbsolute:
+        x: 7075
+        y: 821
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: 2ee87376-f9e4-4ff8-ba4d-c21d1265b3d9
+          role: system
+          text: "作为图数据库和数据分析专家，你需要根据用户的问题和查询结果，提供专业的回答。以下是具体步骤：\n\n1. **处理查询结果**：\n\
+            \   - 如果查询成功但返回结果为空，明确告知用户“没有找到相关信息”。\n   - 如果查询失败并返回错误信息，解释错误原因（如语法错误、节点不存在等），并引导用户提供更清晰的查询需求。如果报错信息为空，说明没有报错。\n\
+            \   - 如果查询结果包含多个实体和关系（如投资关系、分支机构关系、人员关系等），在回答中清晰地描述这些关系。如果涉及路径信息，需详细描述路径关系。\n\
+            \   - 不管是否查询成功，都在回答末尾用Markdown语法附上生成的Cypher查询语句\n   - 如果用户查询没有指定深度，或者指定的查询深度超过3层，则提醒用户你最大支持3层查询\n\
+            \n2. **可视化关系网络图**：\n   - 当结果包含关联关系与路径时，在回答后添加关系网络图（以文字、mermaid代码流程图可视化表示）。\n\
+            \n3. ** 异常数据分析**：\n  - 识别数据中的明显异常点，包括但不限于公司投资时间早于公司成立时间；相同的公司名称，不同的统一社会信用代码；公司人员年龄不满18岁；企业循环投资、不合理股权结构等\n\
+            - 识别数据中是否存在风险的数据，包括但不限于吊销、注销的公司、注册资本为0或缺失的公司、重大违法、行政处罚的公司、违法失信人员等，并提示用户注意和这些公司、人员的关联风险\n\
+            \  - 如果没有异常数据发现，可以不用输出风险提示\n\n4. **语言要求**：\n   - 使用自然语言回答，避免技术术语（除非用户明确要求）。\n\
+            \   - 所有输出内容不得包含任何XML标签。\n"
+        - id: 4a07474a-de94-4864-b188-6998fca4a396
+          role: user
+          text: '用户查询：{{#sys.query#}}
+
+            查询cypher：{{#1755762266760.cypher#}}
+
+            查询结果：{{#1755762266760.succ_result#}}
+
+            报错信息：{{#1755762266760.error_info#}}
+
+            '
+        selected: false
+        title: LLM-结果汇总分析
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '17559194108580'
+      position:
+        x: 7075
+        y: 687.5
+      positionAbsolute:
+        x: 7075
+        y: 687.5
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#17559194108580.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 105
+      id: '1755919453968'
+      position:
+        x: 7409
+        y: 680
+      positionAbsolute:
+        x: 7409
+        y: 680
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '```
+
+
+          正在生成关系网络动态可视化页面......'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 118
+      id: '1755942546418'
+      position:
+        x: 7409
+        y: 825
+      positionAbsolute:
+        x: 7409
+        y: 825
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_array_file: true
+        selected: false
+        title: 文档提取器-用户上传
+        type: document-extractor
+        variable_selector:
+        - '1755944793317'
+        - result
+      height: 94
+      id: '1755944371828'
+      position:
+        x: 2034
+        y: 651
+      positionAbsolute:
+        x: 2034
+        y: 651
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        extract_by:
+          enabled: false
+          serial: '1'
+        filter_by:
+          conditions:
+          - comparison_operator: in
+            key: type
+            value:
+            - image
+          enabled: true
+        item_var_type: file
+        limit:
+          enabled: false
+          size: 10
+        order_by:
+          enabled: false
+          key: ''
+          value: asc
+        selected: false
+        title: 列表操作-图片
+        type: list-operator
+        var_type: array[file]
+        variable:
+        - sys
+        - files
+      height: 94
+      id: '1755944674198'
+      position:
+        x: 2034
+        y: 517
+      positionAbsolute:
+        x: 2034
+        y: 517
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        extract_by:
+          enabled: false
+          serial: '1'
+        filter_by:
+          conditions:
+          - comparison_operator: in
+            key: type
+            value:
+            - document
+          enabled: true
+        item_var_type: file
+        limit:
+          enabled: false
+          size: 10
+        order_by:
+          enabled: false
+          key: ''
+          value: asc
+        selected: false
+        title: 列表操作-文档
+        type: list-operator
+        var_type: array[file]
+        variable:
+        - sys
+        - files
+      height: 94
+      id: '1755944793317'
+      position:
+        x: 1700
+        y: 643.5
+      positionAbsolute:
+        x: 1700
+        y: 643.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: Qwen/Qwen2.5-VL-72B-Instruct
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: 3404173f-8edd-4f1b-a6e9-75b6de32d084
+          role: system
+          text: '提取图片和文档中关于用户所要查询的主体，比如公司名称、统一社会信用代码、公司id、人员id、人员名称等信息。
+
+            如果没有收到任何有效的图片或文档，则不需要提取。'
+        - id: 66c1c18c-1284-4dca-9bc4-78beebb7027e
+          role: user
+          text: '{{#1755944371828.text#}}'
+        selected: false
+        title: LLM-提取查询主体信息
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - sys
+            - files
+          enabled: true
+      height: 90
+      id: '1755944963349'
+      position:
+        x: 2368
+        y: 511.5
+      positionAbsolute:
+        x: 2368
+        y: 511.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -4575.313052777668
+      y: -46.61330232755799
+      zoom: 0.6980618759464485

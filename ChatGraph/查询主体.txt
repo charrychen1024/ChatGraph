@@ -7,4 +7,4 @@ credit_code: "NNQWAYWFAQ9GYBK7R3"
 credit_code: "A59WZ9VFNVPWD37X1Q"
 第三组：
 name: "湖北省科技股份公司"
-credit_code: "TZOP72KNUS7UIFLWHT"
+credit_code: "TZOP72KNUS7UIFLWHT"d
