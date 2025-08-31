@@ -13,7 +13,48 @@ dependencies:
 kind: app
 version: 0.3.1
 workflow:
-  conversation_variables: []
+  conversation_variables:
+  - description: ''
+    id: 289fd5fa-5e7d-4389-bc15-801d6e149527
+    name: database_schema
+    selector:
+    - conversation
+    - database_schema
+    value: "# Neo4j 图数据结构说明文档\n\n## 1. 节点类型（Node Labels）\n\n### 1.1 公司节点（Company）\n\
+      \n- **标签**：`Company`\n- **属性**：\n  - `name`：公司名称（字符串）\n  - `credit_code`：统一社会信用代码（18位数字和大写字母，唯一）\n\
+      \  - `company_id`：公司ID（唯一数字标识）\n  - `reg_date`：注册日期（字符串，格式如\"2012-05-16\"）\n\
+      \  - `reg_capital`：注册资本（浮点数，单位万元）\n\n#### 示例\n```json\n{\n  \"name\": \"江苏科技有限公司\"\
+      ,\n  \"credit_code\": \"A1B2C3D4E5F6G7H8I9\",\n  \"company_id\": 1,\n  \"reg_date\"\
+      : \"2012-05-16\",\n  \"reg_capital\": 5000.00\n}\n```\n\n---\n\n### 1.2 人员节点（Person）\n\
+      \n- **标签**：`Person`\n- **属性**：\n  - `name`：姓名（字符串）\n  - `person_id`：人员ID（唯一数字标识）\n\
+      \  - `age`：年龄（整数，18-70）\n  - `gender`：性别（\"男\" 或 \"女\"）\n\n#### 示例\n```json\n\
+      {\n  \"name\": \"张伟\",\n  \"person_id\": 101,\n  \"age\": 42,\n  \"gender\"\
+      : \"男\"\n}\n```\n\n---\n\n## 2. 关系类型（Relationship Types）\n\n### 2.1 企业投资关系（company_investment）\n\
+      \n- **类型**：`COMPANY_INVESTMENT`\n- **起点**：`Company`\n- **终点**：`Company`\n- **属性**：\n\
+      \  - `invest_rate`：投资比例（0-1之间的浮点数）\n  - `invest_date`：投资日期（字符串，格式如\"2015-08-20\"\
+      ）\n\n#### 示例\n```\n(:Company {company_id: 1})-[:COMPANY_INVESTMENT {invest_rate:\
+      \ 0.35, invest_date: \"2015-08-20\"}]->(:Company {company_id: 2})\n```\n\n---\n\
+      \n### 2.2 人员投资关系（person_investment）\n\n- **类型**：`PERSON_INVESTMENT`\n- **起点**：`Person`\n\
+      - **终点**：`Company`\n- **属性**：\n  - `invest_rate`：投资比例（0-1之间的浮点数）\n  - `invest_date`：投资日期（字符串）\n\
+      \n#### 示例\n```\n(:Person {person_id: 101})-[:PERSON_INVESTMENT {invest_rate:\
+      \ 0.15, invest_date: \"2018-03-12\"}]->(:Company {company_id: 1})\n```\n\n---\n\
+      \n### 2.3 分支机构关系（com_branch）\n\n- **类型**：`COM_BRANCH`\n- **起点**：`Company`（母公司）\n\
+      - **终点**：`Company`（分公司）\n- **属性**：无\n\n#### 示例\n```\n(:Company {company_id:\
+      \ 1})-[:COM_BRANCH]->(:Company {company_id: 3})\n```\n\n---\n\n### 2.4 任职关系（per_job）\n\
+      \n- **类型**：`PER_JOB`\n- **起点**：`Person`\n- **终点**：`Company`\n- **属性**：\n  -\
+      \ `job_type`：职位类型（如\"董事长\"、\"总经理\"、\"高管\"、\"监事\"、\"财务负责人\"等）\n\n#### 示例\n```\n\
+      (:Person {person_id: 102})-[:PER_JOB {job_type: \"董事长\"}]->(:Company {company_id:\
+      \ 1})\n```\n\n---\n\n### 2.5 法人关系（per_legal_person）\n\n- **类型**：`PER_LEGAL_PERSON`\n\
+      - **起点**：`Person`\n- **终点**：`Company`\n- **属性**：\n  - `job_type`：职位类型（固定为\"\
+      法定代表人\"）\n\n#### 示例\n```\n(:Person {person_id: 103})-[:PER_LEGAL_PERSON {job_type:\
+      \ \"法定代表人\"}]->(:Company {company_id: 1})\n```\n\n---\n\n## 3. 结构示意图\n\n```mermaid\n\
+      graph TD\n  A[Company] -- COMPANY_INVESTMENT --> B[Company]\n  P[Person] --\
+      \ PERSON_INVESTMENT --> A\n  A -- COM_BRANCH --> C[Company]\n  P2[Person] --\
+      \ PER_JOB --> A\n  P3[Person] -- PER_LEGAL_PERSON --> A\n```\n\n---\n\n## 4.\
+      \ 典型子图示例\n\n- 江苏科技有限公司（company_id: 1）由张伟（person_id: 101）投资15%，由李丽（person_id:\
+      \ 102）担任董事长，王强（person_id: 103）为法定代表人。\n- 江苏科技有限公司投资了苏州贸易有限公司（company_id: 2）35%。\n\
+      - 江苏科技有限公司有一个分支机构南京科技有限公司（company_id: 3）。"
+    value_type: string
   environment_variables: []
   features:
     file_upload:
@@ -87,19 +128,6 @@ workflow:
     - data:
         isInIteration: false
         isInLoop: false
-        sourceType: knowledge-retrieval
-        targetType: document-extractor
-      id: 1755593778352-source-1755594255467-target
-      selected: false
-      source: '1755593778352'
-      sourceHandle: source
-      target: '1755594255467'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInIteration: false
-        isInLoop: false
         sourceType: question-classifier
         targetType: llm
       id: 1755592476558-1755600004813-1755600156378-target
@@ -157,19 +185,6 @@ workflow:
       source: '1755592476558'
       sourceHandle: '1755605879822'
       target: '1755605975992'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInIteration: false
-        isInLoop: false
-        sourceType: document-extractor
-        targetType: question-classifier
-      id: 1755594255467-source-1755607024978-target
-      selected: false
-      source: '1755594255467'
-      sourceHandle: source
-      target: '1755607024978'
       targetHandle: target
       type: custom
       zIndex: 0
@@ -275,6 +290,7 @@ workflow:
         sourceType: code
         targetType: template-transform
       id: 1755762628615-source-1755776187287-target
+      selected: false
       source: '1755762628615'
       sourceHandle: source
       target: '1755776187287'
@@ -288,6 +304,7 @@ workflow:
         sourceType: template-transform
         targetType: code
       id: 1755776187287-source-1755762942521-target
+      selected: false
       source: '1755776187287'
       sourceHandle: source
       target: '1755762942521'
@@ -301,6 +318,7 @@ workflow:
         sourceType: http-request
         targetType: if-else
       id: 1755762498234-source-1755776574625-target
+      selected: false
       source: '1755762498234'
       sourceHandle: source
       target: '1755776574625'
@@ -314,6 +332,7 @@ workflow:
         sourceType: if-else
         targetType: code
       id: 1755776574625-true-1755762628615-target
+      selected: false
       source: '1755776574625'
       sourceHandle: 'true'
       target: '1755762628615'
@@ -327,6 +346,7 @@ workflow:
         sourceType: if-else
         targetType: answer
       id: 1755776574625-false-1755776606840-target
+      selected: false
       source: '1755776574625'
       sourceHandle: 'false'
       target: '1755776606840'
@@ -340,6 +360,7 @@ workflow:
         sourceType: answer
         targetType: loop-end
       id: 1755776606840-source-1755777567696-target
+      selected: false
       source: '1755776606840'
       sourceHandle: source
       target: '1755777567696'
@@ -353,6 +374,7 @@ workflow:
         sourceType: if-else
         targetType: assigner
       id: 1755762799638-true-1755779241201-target
+      selected: false
       source: '1755762799638'
       sourceHandle: 'true'
       target: '1755779241201'
@@ -366,6 +388,7 @@ workflow:
         sourceType: assigner
         targetType: loop-end
       id: 1755779241201-source-1755772875929-target
+      selected: false
       source: '1755779241201'
       sourceHandle: source
       target: '1755772875929'
@@ -377,6 +400,7 @@ workflow:
         sourceType: loop
         targetType: if-else
       id: 1755762266760-source-1755844856307-target
+      selected: false
       source: '1755762266760'
       sourceHandle: source
       target: '1755844856307'
@@ -389,6 +413,7 @@ workflow:
         sourceType: if-else
         targetType: llm
       id: 1755844856307-false-1755844908298-target
+      selected: false
       source: '1755844856307'
       sourceHandle: 'false'
       target: '1755844908298'
@@ -401,6 +426,7 @@ workflow:
         sourceType: llm
         targetType: answer
       id: 1755844908298-source-1755844958893-target
+      selected: false
       source: '1755844908298'
       sourceHandle: source
       target: '1755844958893'
@@ -412,6 +438,7 @@ workflow:
         sourceType: if-else
         targetType: llm
       id: 1755844856307-true-1755846354283-target
+      selected: false
       source: '1755844856307'
       sourceHandle: 'true'
       target: '1755846354283'
@@ -424,6 +451,7 @@ workflow:
         sourceType: code
         targetType: tool
       id: 1755849084021-source-1755875352005-target
+      selected: false
       source: '1755849084021'
       sourceHandle: source
       target: '1755875352005'
@@ -435,6 +463,7 @@ workflow:
         sourceType: tool
         targetType: llm
       id: 1755875352005-source-1755775792331-target
+      selected: false
       source: '1755875352005'
       sourceHandle: source
       target: '1755775792331'
@@ -446,6 +475,7 @@ workflow:
         sourceType: llm
         targetType: answer
       id: 1755775792331-source-1755847810128-target
+      selected: false
       source: '1755775792331'
       sourceHandle: source
       target: '1755847810128'
@@ -458,6 +488,7 @@ workflow:
         sourceType: llm
         targetType: if-else
       id: 1755846354283-source-1755877602850-target
+      selected: false
       source: '1755846354283'
       sourceHandle: source
       target: '1755877602850'
@@ -469,6 +500,7 @@ workflow:
         sourceType: if-else
         targetType: llm
       id: 1755844856307-true-17559194108580-target
+      selected: false
       source: '1755844856307'
       sourceHandle: 'true'
       target: '17559194108580'
@@ -481,33 +513,10 @@ workflow:
         sourceType: llm
         targetType: answer
       id: 17559194108580-source-1755919453968-target
+      selected: false
       source: '17559194108580'
       sourceHandle: source
       target: '1755919453968'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInIteration: false
-        isInLoop: false
-        sourceType: if-else
-        targetType: answer
-      id: 1755877602850-true-1755942546418-target
-      source: '1755877602850'
-      sourceHandle: 'true'
-      target: '1755942546418'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInIteration: false
-        isInLoop: false
-        sourceType: answer
-        targetType: code
-      id: 1755942546418-source-1755849084021-target
-      source: '1755942546418'
-      sourceHandle: source
-      target: '1755849084021'
       targetHandle: target
       type: custom
       zIndex: 0
@@ -528,6 +537,7 @@ workflow:
         sourceType: start
         targetType: question-classifier
       id: 1755529752312-source-1755592476558-target
+      selected: false
       source: '1755529752312'
       sourceHandle: source
       target: '1755592476558'
@@ -562,19 +572,9 @@ workflow:
     - data:
         isInLoop: false
         sourceType: question-classifier
-        targetType: knowledge-retrieval
-      id: 1755592476558-1-1755593778352-target
-      source: '1755592476558'
-      sourceHandle: '1'
-      target: '1755593778352'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: question-classifier
         targetType: list-operator
       id: 1755607024978-1-1755944674198-target
+      selected: false
       source: '1755607024978'
       sourceHandle: '1'
       target: '1755944674198'
@@ -586,6 +586,7 @@ workflow:
         sourceType: question-classifier
         targetType: list-operator
       id: 1755607024978-1-1755944793317-target
+      selected: false
       source: '1755607024978'
       sourceHandle: '1'
       target: '1755944793317'
@@ -597,9 +598,44 @@ workflow:
         sourceType: llm
         targetType: loop
       id: 1755944963349-source-1755762266760-target
+      selected: false
       source: '1755944963349'
       sourceHandle: source
       target: '1755762266760'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: question-classifier
+      id: 1755593778352-source-1755607024978-target
+      selected: false
+      source: '1755593778352'
+      sourceHandle: source
+      target: '1755607024978'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: knowledge-retrieval
+      id: 1755592476558-1-1755593778352-target
+      source: '1755592476558'
+      sourceHandle: '1'
+      target: '1755593778352'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: 1755877602850-true-1755849084021-target
+      source: '1755877602850'
+      sourceHandle: 'true'
+      target: '1755849084021'
       targetHandle: target
       type: custom
       zIndex: 0
@@ -609,20 +645,8 @@ workflow:
         selected: false
         title: 开始
         type: start
-        variables:
-        - allowed_file_extensions: []
-          allowed_file_types:
-          - document
-          allowed_file_upload_methods:
-          - local_file
-          - remote_url
-          label: database_schema
-          max_length: 48
-          options: []
-          required: true
-          type: file
-          variable: database_schema
-      height: 90
+        variables: []
+      height: 54
       id: '1755529752312'
       position:
         x: 30
@@ -722,10 +746,10 @@ workflow:
       id: '1755593666175'
       position:
         x: 698
-        y: 512.5
+        y: 372
       positionAbsolute:
         x: 698
-        y: 512.5
+        y: 372
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -733,7 +757,7 @@ workflow:
       width: 244
     - data:
         dataset_ids:
-        - CYiD+NzVUK/1tW65brKHwJaQWcFfrEHX0vWhQvqAQPhfRFLIcp9pJTfwOePcTmdG
+        - l5YLdcH+Ix66/3yn4PE67EpkdKDI/YOeQmcjqqxv3ikg6NbYhSmpx//71X0xNnJB
         desc: ''
         multiple_retrieval_config:
           reranking_enable: false
@@ -751,8 +775,8 @@ workflow:
               embedding_provider_name: langgenius/siliconflow/siliconflow
               vector_weight: 1
         query_variable_selector:
-        - '1755529752312'
-        - sys.query
+        - sys
+        - query
         retrieval_mode: multiple
         selected: false
         title: 知识检索
@@ -761,32 +785,10 @@ workflow:
       id: '1755593778352'
       position:
         x: 698
-        y: 372
+        y: 839.5
       positionAbsolute:
         x: 698
-        y: 372
-      selected: false
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 244
-    - data:
-        desc: ''
-        is_array_file: false
-        selected: false
-        title: 文档提取器-图schema
-        type: document-extractor
-        variable_selector:
-        - '1755529752312'
-        - database_schema
-      height: 94
-      id: '1755594255467'
-      position:
-        x: 1032
-        y: 372
-      positionAbsolute:
-        x: 1032
-        y: 372
+        y: 839.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -803,10 +805,10 @@ workflow:
       id: '1755595309447'
       position:
         x: 1032
-        y: 506
+        y: 372
       positionAbsolute:
         x: 1032
-        y: 506
+        y: 372
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -851,10 +853,10 @@ workflow:
       id: '1755600156378'
       position:
         x: 698
-        y: 657.5
+        y: 517
       positionAbsolute:
         x: 698
-        y: 657.5
+        y: 517
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -871,10 +873,10 @@ workflow:
       id: '1755600322102'
       position:
         x: 1032
-        y: 651
+        y: 517
       positionAbsolute:
         x: 1032
-        y: 651
+        y: 517
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -919,10 +921,10 @@ workflow:
       id: '1755605975992'
       position:
         x: 698
-        y: 802.5
+        y: 662
       positionAbsolute:
         x: 698
-        y: 802.5
+        y: 662
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -939,10 +941,11 @@ workflow:
       id: '1755606154404'
       position:
         x: 1032
-        y: 796
+        y: 662
       positionAbsolute:
         x: 1032
-        y: 796
+        y: 662
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -981,11 +984,11 @@ workflow:
       height: 172
       id: '1755607024978'
       position:
-        x: 1366
-        y: 372
+        x: 1032
+        y: 807
       positionAbsolute:
-        x: 1366
-        y: 372
+        x: 1032
+        y: 807
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -995,8 +998,8 @@ workflow:
         context:
           enabled: true
           variable_selector:
-          - '1755594255467'
-          - text
+          - conversation
+          - database_schema
         desc: ''
         memory:
           query_prompt_template: '{{#sys.query#}}
@@ -1035,11 +1038,11 @@ workflow:
       height: 90
       id: '1755607106139'
       position:
-        x: 1700
-        y: 372
+        x: 1366
+        y: 840.5
       positionAbsolute:
-        x: 1700
-        y: 372
+        x: 1366
+        y: 840.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1055,11 +1058,11 @@ workflow:
       height: 105
       id: '1755607170754'
       position:
-        x: 2034
-        y: 372
+        x: 1700
+        y: 840.5
       positionAbsolute:
-        x: 2034
-        y: 372
+        x: 1700
+        y: 840.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1096,11 +1099,11 @@ workflow:
       height: 411
       id: '1755762266760'
       position:
-        x: 2702
-        y: 511.5
+        x: 2368
+        y: 980
       positionAbsolute:
-        x: 2702
-        y: 511.5
+        x: 2368
+        y: 980
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1121,9 +1124,10 @@ workflow:
         x: 60
         y: 105.5
       positionAbsolute:
-        x: 2762
-        y: 617
+        x: 2428
+        y: 1085.5
       selectable: false
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom-loop-start
@@ -1131,8 +1135,10 @@ workflow:
       zIndex: 1002
     - data:
         context:
-          enabled: false
-          variable_selector: []
+          enabled: true
+          variable_selector:
+          - '1755593778352'
+          - result
         desc: ''
         isInIteration: false
         isInLoop: true
@@ -1165,9 +1171,9 @@ workflow:
             \   - 你的输出：MATCH (n:Person {name: '李华'}) RETURN n\n   - 用户输入：查找“李华”的朋友，并显示他们之间的关系。\n\
             \   - 你的输出：MATCH p = (n:Person {name: '李华'})-[r:FRIEND_OF]-(f:Person)\
             \ RETURN n, r, f, p\n5. cypher中尽量完整地返回节点、关系、路径所有信息，包含属性信息\n6. 如果此前生成的cypher查询报错，请根据报错信息分析报错原因，并重新生成正确的cypher\n\
-            \n## 注意\n- 仔细理解图数据库schema：{{#1755594255467.text#}}，确保生成的cypher符合当前图库数据结构设计，不能出现当前图库schema以外类型的点和边\n\
-            - Cypher参考语句：{{#context#}}\n- 当用户没有指定查询关联深度，cypher中关系查询的最大深度不能超过3层\n-\
-            \ 当用户指定了查询深度，如果深度超过了3层，生成的cypher也不能超过3层深度关系查询\n\n## 限制\n- 严禁输出drop, truncate,\
+            \n## 注意\n- 根据上下文{{#context#}}内容和完整的schema{{#conversation.database_schema#}}仔细理解图数据库schema和参考cypher样例：\n\
+            确保生成的cypher符合当前图库数据结构设计，不能出现当前图库schema以外类型的点和边\n- 当用户没有指定查询关联深度，cypher中关系查询的最大深度不能超过3层\n\
+            - 当用户指定了查询深度，如果深度超过了3层，生成的cypher也不能超过3层深度关系查询\n\n## 限制\n- 严禁输出drop, truncate,\
             \ delete，alter，set之类的cypher语句\n- 禁止使用apoc，call语法\n- 每次查询只生成一条cypher\n\
             - 直接输出cypher文本内容，不要包裹markdown中以及任何markdown字符"
         - id: 091f0ece-f001-4440-83f2-ee13e106bc4c
@@ -1190,8 +1196,8 @@ workflow:
         x: 204
         y: 84.5
       positionAbsolute:
-        x: 2906
-        y: 596
+        x: 2572
+        y: 1064.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1231,8 +1237,8 @@ workflow:
         x: 508
         y: 84.5
       positionAbsolute:
-        x: 3210
-        y: 596
+        x: 2876
+        y: 1064.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1271,18 +1277,18 @@ workflow:
           max_write_timeout: 0
         title: HTTP 请求-提交查询
         type: http-request
-        url: http://192.168.3.84:7474/db/neo4j/tx/commit
+        url: http://192.168.3.90:7474/db/neo4j/tx/commit
         variables: []
-      height: 140
+      height: 139
       id: '1755762498234'
       parentId: '1755762266760'
       position:
         x: 812
         y: 60
       positionAbsolute:
-        x: 3514
-        y: 571.5
-      selected: false
+        x: 3180
+        y: 1040
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -1329,8 +1335,8 @@ workflow:
         x: 1420
         y: 102.5
       positionAbsolute:
-        x: 4122
-        y: 614
+        x: 3788
+        y: 1082.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1364,8 +1370,8 @@ workflow:
         x: 2332
         y: 66.5
       positionAbsolute:
-        x: 5034
-        y: 578
+        x: 4700
+        y: 1046.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1404,8 +1410,8 @@ workflow:
         x: 2028
         y: 102.5
       positionAbsolute:
-        x: 4730
-        y: 614
+        x: 4396
+        y: 1082.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1427,8 +1433,8 @@ workflow:
         x: 2940
         y: 254.5
       positionAbsolute:
-        x: 5642
-        y: 766
+        x: 5308
+        y: 1234.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1461,8 +1467,8 @@ workflow:
         x: 2636
         y: 86.5
       positionAbsolute:
-        x: 5338
-        y: 598
+        x: 5004
+        y: 1066.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1504,11 +1510,11 @@ workflow:
       height: 90
       id: '1755775792331'
       position:
-        x: 8411
-        y: 839
+        x: 7743
+        y: 717
       positionAbsolute:
-        x: 8411
-        y: 839
+        x: 7743
+        y: 717
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1536,8 +1542,9 @@ workflow:
         x: 1724
         y: 102.5
       positionAbsolute:
-        x: 4426
-        y: 614
+        x: 4092
+        y: 1082.5
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -1570,8 +1577,8 @@ workflow:
         x: 1116
         y: 66.5
       positionAbsolute:
-        x: 3818
-        y: 578
+        x: 3484
+        y: 1046.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1595,8 +1602,9 @@ workflow:
         x: 1420
         y: 196.5
       positionAbsolute:
-        x: 4122
-        y: 708
+        x: 3788
+        y: 1176.5
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -1617,8 +1625,8 @@ workflow:
         x: 1724
         y: 222
       positionAbsolute:
-        x: 4426
-        y: 733.5
+        x: 4092
+        y: 1202
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1667,8 +1675,8 @@ workflow:
         x: 2636
         y: 212.5
       positionAbsolute:
-        x: 5338
-        y: 724
+        x: 5004
+        y: 1192.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1695,11 +1703,11 @@ workflow:
       height: 126
       id: '1755844856307'
       position:
-        x: 6316
-        y: 511.5
+        x: 5982
+        y: 980
       positionAbsolute:
-        x: 6316
-        y: 511.5
+        x: 5982
+        y: 980
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1725,7 +1733,8 @@ workflow:
             \   - 不管是否查询成功，都在回答末尾用Markdown语法附上生成的Cypher查询语句\n   - 如果用户查询没有指定深度，或者指定的查询深度超过3层，则提醒用户你最大支持3层查询\n\
             \n2. **可视化关系网络图**：\n   - 当结果包含关联关系与路径时，在回答后添加关系网络图（以文字、mermaid代码流程图可视化表示）。\n\
             \n3. **语言要求**：\n   - 使用自然语言回答，避免技术术语（除非用户明确要求）。\n   - 所有输出内容不得包含任何XML标签。\n"
-        - role: user
+        - id: d2a31ed8-de29-497b-a5da-27a67403bcb7
+          role: user
           text: '报错信息：{{#1755762266760.error_info#}}
 
             查询语句：{{#1755762266760.cypher#}}'
@@ -1738,11 +1747,11 @@ workflow:
       height: 90
       id: '1755844908298'
       position:
-        x: 7409
-        y: 511.5
+        x: 7075
+        y: 1002
       positionAbsolute:
-        x: 7409
-        y: 511.5
+        x: 7075
+        y: 1002
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1758,11 +1767,12 @@ workflow:
       height: 105
       id: '1755844958893'
       position:
-        x: 7743
-        y: 511.5
+        x: 7409
+        y: 1043
       positionAbsolute:
-        x: 7743
-        y: 511.5
+        x: 7409
+        y: 1043
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -1844,11 +1854,11 @@ workflow:
       height: 90
       id: '1755846354283'
       position:
-        x: 6741
-        y: 839
+        x: 6407
+        y: 717
       positionAbsolute:
-        x: 6741
-        y: 839
+        x: 6407
+        y: 717
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1866,11 +1876,11 @@ workflow:
       height: 105
       id: '1755847810128'
       position:
-        x: 8745
-        y: 839
+        x: 8077
+        y: 717
       positionAbsolute:
-        x: 8745
-        y: 839
+        x: 8077
+        y: 717
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -2027,11 +2037,11 @@ workflow:
       height: 54
       id: '1755849084021'
       position:
-        x: 7743
-        y: 864.5
+        x: 7075
+        y: 717
       positionAbsolute:
-        x: 7743
-        y: 864.5
+        x: 7075
+        y: 717
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -2111,14 +2121,14 @@ workflow:
             type: mixed
             value: '{{#1755849084021.result#}}'
         type: tool
-      height: 152
+      height: 151
       id: '1755875352005'
       position:
-        x: 8077
-        y: 839
+        x: 7409
+        y: 717
       positionAbsolute:
-        x: 8077
-        y: 839
+        x: 7409
+        y: 717
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -2144,11 +2154,11 @@ workflow:
       height: 126
       id: '1755877602850'
       position:
-        x: 7075
-        y: 821
+        x: 6741
+        y: 717
       positionAbsolute:
-        x: 7075
-        y: 821
+        x: 6741
+        y: 717
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -2171,8 +2181,9 @@ workflow:
           text: "作为图数据库和数据分析专家，你需要根据用户的问题和查询结果，提供专业的回答。以下是具体步骤：\n\n1. **处理查询结果**：\n\
             \   - 如果查询成功但返回结果为空，明确告知用户“没有找到相关信息”。\n   - 如果查询失败并返回错误信息，解释错误原因（如语法错误、节点不存在等），并引导用户提供更清晰的查询需求。如果报错信息为空，说明没有报错。\n\
             \   - 如果查询结果包含多个实体和关系（如投资关系、分支机构关系、人员关系等），在回答中清晰地描述这些关系。如果涉及路径信息，需详细描述路径关系。\n\
-            \   - 不管是否查询成功，都在回答末尾用Markdown语法附上生成的Cypher查询语句\n   - 如果用户查询没有指定深度，或者指定的查询深度超过3层，则提醒用户你最大支持3层查询\n\
-            \n2. **可视化关系网络图**：\n   - 当结果包含关联关系与路径时，在回答后添加关系网络图（以文字、mermaid代码流程图可视化表示）。\n\
+            \   - 不管是否查询成功，都在回答末尾用Markdown语法附上生成的Cypher查询语句，且要正确结束markdown代码块，防止其他内容嵌入进来\n\
+            \   - 如果用户查询没有指定深度，或者指定的查询深度超过3层，则提醒用户你最大支持3层查询\n\n2. **可视化关系网络图**：\n\
+            \   - 当结果包含关联关系与路径时，在回答后添加关系网络图（以文字、mermaid代码流程图可视化表示），且要正确结束mermaid代码块，防止其他内容嵌入进来\n\
             \n3. ** 异常数据分析**：\n  - 识别数据中的明显异常点，包括但不限于公司投资时间早于公司成立时间；相同的公司名称，不同的统一社会信用代码；公司人员年龄不满18岁；企业循环投资、不合理股权结构等\n\
             - 识别数据中是否存在风险的数据，包括但不限于吊销、注销的公司、注册资本为0或缺失的公司、重大违法、行政处罚的公司、违法失信人员等，并提示用户注意和这些公司、人员的关联风险\n\
             \  - 如果没有异常数据发现，可以不用输出风险提示\n\n4. **语言要求**：\n   - 使用自然语言回答，避免技术术语（除非用户明确要求）。\n\
@@ -2197,12 +2208,12 @@ workflow:
       height: 90
       id: '17559194108580'
       position:
-        x: 7075
-        y: 687.5
+        x: 6741
+        y: 883
       positionAbsolute:
-        x: 7075
-        y: 687.5
-      selected: true
+        x: 6741
+        y: 883
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -2217,33 +2228,11 @@ workflow:
       height: 105
       id: '1755919453968'
       position:
-        x: 7409
-        y: 680
+        x: 7075
+        y: 839.5
       positionAbsolute:
-        x: 7409
-        y: 680
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 244
-    - data:
-        answer: '```
-
-
-          正在生成关系网络动态可视化页面......'
-        desc: ''
-        selected: false
-        title: 直接回复
-        type: answer
-        variables: []
-      height: 118
-      id: '1755942546418'
-      position:
-        x: 7409
-        y: 825
-      positionAbsolute:
-        x: 7409
-        y: 825
+        x: 7075
+        y: 839.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -2261,11 +2250,11 @@ workflow:
       height: 94
       id: '1755944371828'
       position:
-        x: 2034
-        y: 651
+        x: 1700
+        y: 1119.5
       positionAbsolute:
-        x: 2034
-        y: 651
+        x: 1700
+        y: 1119.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -2301,11 +2290,11 @@ workflow:
       height: 94
       id: '1755944674198'
       position:
-        x: 2034
-        y: 517
+        x: 1700
+        y: 985.5
       positionAbsolute:
-        x: 2034
-        y: 517
+        x: 1700
+        y: 985.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -2341,11 +2330,11 @@ workflow:
       height: 94
       id: '1755944793317'
       position:
-        x: 1700
-        y: 643.5
+        x: 1366
+        y: 1112
       positionAbsolute:
-        x: 1700
-        y: 643.5
+        x: 1366
+        y: 1112
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -2379,23 +2368,23 @@ workflow:
           configs:
             detail: high
             variable_selector:
-            - sys
-            - files
+            - '1755944674198'
+            - result
           enabled: true
       height: 90
       id: '1755944963349'
       position:
-        x: 2368
-        y: 511.5
+        x: 2034
+        y: 980
       positionAbsolute:
-        x: 2368
-        y: 511.5
+        x: 2034
+        y: 980
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
       width: 244
     viewport:
-      x: -4575.313052777668
-      y: -46.61330232755799
-      zoom: 0.6980618759464485
+      x: -2000.827450980391
+      y: -205.8499999999999
+      zoom: 0.7

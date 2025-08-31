@@ -1,0 +1,1080 @@
+app:
+  description: 企业风险深度调查
+  icon: id
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 企信查
+  use_icon_as_answer_icon: true
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/siliconflow:0.0.23@da2cc8bd076ff081b0c4f69e6d484e3e1e79bd3ad1d937a9c00d9ffdbc8dd14f
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/jina_tool:0.0.7@08d5935b56b9ddaa633204874c0fd796c14971489b6379fad1a430b5ec99b569
+kind: app
+version: 0.3.1
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: 企业信息一键查询！
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions:
+    - 深度分析江苏省制造有限公司的风险情况，输出专业的分析报告
+    - 杭州野生动物园周边有哪些公司？
+    suggested_questions_after_answer:
+      enabled: true
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: question-classifier
+      id: 1756558974922-source-1756622935305-target
+      source: '1756558974922'
+      sourceHandle: source
+      target: '1756622935305'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1756622935305-1-llm-target
+      source: '1756622935305'
+      sourceHandle: '1'
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1756622935305-1-1756623687061-target
+      source: '1756622935305'
+      sourceHandle: '1'
+      target: '1756623687061'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: tool
+      id: 1756623687061-source-1756623890027-target
+      source: '1756623687061'
+      sourceHandle: source
+      target: '1756623890027'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: llm
+      id: 1756623890027-source-1756623918067-target
+      source: '1756623890027'
+      sourceHandle: source
+      target: '1756623918067'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1756623918067-source-answer-target
+      source: '1756623918067'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: agent
+      id: 1756622935305-2-1756624205373-target
+      source: '1756622935305'
+      sourceHandle: '2'
+      target: '1756624205373'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: agent
+        targetType: answer
+      id: 1756624205373-source-1756624661671-target
+      source: '1756624205373'
+      sourceHandle: source
+      target: '1756624661671'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: code
+      id: llm-source-1756645989129-target
+      source: llm
+      sourceHandle: source
+      target: '1756645989129'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: iteration
+      id: 1756645989129-source-1756646386942-target
+      source: '1756645989129'
+      sourceHandle: source
+      target: '1756646386942'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1756646386942'
+        sourceType: iteration-start
+        targetType: tool
+      id: 1756646386942start-source-1756646419539-target
+      source: 1756646386942start
+      sourceHandle: source
+      target: '1756646419539'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInLoop: false
+        sourceType: iteration
+        targetType: llm
+      id: 1756646386942-source-1756623918067-target
+      source: '1756646386942'
+      sourceHandle: source
+      target: '1756623918067'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables: []
+      height: 54
+      id: '1756558974922'
+      position:
+        x: 30
+        y: 252.5
+      positionAbsolute:
+        x: 30
+        y: 252.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 10
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: fada4478-7096-421c-a87b-ddd9994ef427
+          role: system
+          text: "\n1. 请首先识别用户原始问题中涉及的公司主体和人员主体，即使可能隐含的主体也要提取出来。  \n2. 分析问题关注的核心关联维度：若涉及公司，优先拆解为\"\
+            公司对外投资\"\"公司股东结构\"\"关联公司网络\"\"公司员工信息\"等关联关系；若涉及人员，拆解为\"任职关系\"\"持股关系\"\"\
+            关联企业\"\"合作企业\"等维度。  \n3. 对每个核心维度进一步细化：例如对\"公司对外投资\"需拆解为\"目标公司直接投资了哪些公司\"\
+            \"目标公司通过子公司投资了哪些企业\"\"被投资公司业务类型\"等具体问题。  \n4. 保证所有细化问题仅围绕实体关联网络展开，避免包含业务数据、财务数据等非关联性的提问，同时避免没有明确查询主体和目标，没有查询条件限制的问题。\
+            \  \n5. 每个细化问题应控制在一两句话内（不超过20字），使用简洁的疑问句式并明确主客体关系。  \n6. 问题数量不超过3个，不可以有含义重复的问题。\n\
+            7. 最终输出应为标准JSON格式，用字符串表示，包含命名为\"question\"的数组，数组元素为各个细化后的问题\n8. 请特别注意无需输出任何解释说明或格式标签，尤其是不要有markdown符号与格式，比如```json。"
+        - id: de88cda0-a115-474d-8c11-5a146af69721
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: LLM-问题拆解-关联风险
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: llm
+      position:
+        x: 634
+        y: 172.45892948442645
+      positionAbsolute:
+        x: 634
+        y: 172.45892948442645
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1756623918067.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 105
+      id: answer
+      position:
+        x: 2310.539392811454
+        y: 311.0674241014318
+      positionAbsolute:
+        x: 2310.539392811454
+        y: 311.0674241014318
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        author: charry
+        desc: ''
+        height: 196
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"从下列维度分析企业风险：","type":"text","version":1},{"type":"linebreak","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"1.
+          经营风险：行政处罚，违法涉诉，失信人，破产倒闭，吊销注销等信息","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"2.
+          舆情风险：互联网的舆论热点，情绪倾向","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"3.
+          关联风险：深度关联企业，关联人的相关风险","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 248
+      height: 196
+      id: '1756606358066'
+      position:
+        x: 68
+        y: 24
+      positionAbsolute:
+        x: 68
+        y: 24
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-note
+      width: 248
+    - data:
+        author: charry
+        desc: ''
+        height: 88
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"地图搜索目标范围内的所有企业","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 240
+      height: 88
+      id: '1756606766392'
+      position:
+        x: 358.57142857142856
+        y: 24
+      positionAbsolute:
+        x: 358.57142857142856
+        y: 24
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-note
+      width: 240
+    - data:
+        classes:
+        - id: '1'
+          name: 查询某个或某些企业的风险
+        - id: '2'
+          name: 查询地图某个区域有哪些企业
+        desc: ''
+        instructions: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        query_variable_selector:
+        - '1756558974922'
+        - sys.query
+        selected: false
+        title: 问题分类器
+        topics: []
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 172
+      id: '1756622935305'
+      position:
+        x: 334
+        y: 252.5
+      positionAbsolute:
+        x: 334
+        y: 252.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: ee2a791d-bfa8-4eac-a753-22256abb27bf
+          role: system
+          text: '
+
+
+
+            请严格按照以下步骤完成任务：
+
+            1.仔细阅读用户问题，识别所有提及的公司主体（如企业全称或简称）、人员主体（如姓名、职位）、主要事件（如战略合作/法律纠纷/财务变动等）、日期（具体年月日或模糊时间节点如''近期''）
+
+            2.仅提取原文明确存在的信息，禁止添加任何推断或延伸内容
+
+            3.将提取要素按"公司主体+人员主体+主要事件+日期"顺序整合为一句话
+
+            4.确保输出内容不超过100字且不包含任何标记符号。
+
+
+            注意：若问题中未提及特定要素则不作记录，如"华为近期与比亚迪的技术合作"需提取为"华为 比亚迪 技术合作 近期"。完成检查后直接输出结果。'
+        - id: 500111a1-3e81-4645-b505-db476fdfe4e2
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: LLM-问题拆解-舆情风险
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1756623687061'
+      position:
+        x: 634
+        y: 381.5
+      positionAbsolute:
+        x: 634
+        y: 381.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: used to find information on the web
+            ja_JP: used to find information on the web
+            pt_BR: Usado para encontrar informações na web
+            zh_Hans: 在网络上搜索信息
+          label:
+            en_US: Question (Query)
+            ja_JP: Question (Query)
+            pt_BR: Pergunta (Consulta)
+            zh_Hans: 查询
+          llm_description: Pergunta simples para fazer na web
+          max: null
+          min: null
+          name: query
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: 0
+          form: form
+          human_description:
+            en_US: 'Captions all images at the specified URL, adding ''Image [idx]:
+              [caption]'' as an alt tag for those without one. This allows downstream
+              LLMs to interact with the images in activities such as reasoning and
+              summarizing.'
+            ja_JP: 'Captions all images at the specified URL, adding ''Image [idx]:
+              [caption]'' as an alt tag for those without one. This allows downstream
+              LLMs to interact with the images in activities such as reasoning and
+              summarizing.'
+            pt_BR: 'Captions all images at the specified URL, adding ''Image [idx]:
+              [caption]'' as an alt tag for those without one. This allows downstream
+              LLMs to interact with the images in activities such as reasoning and
+              summarizing.'
+            zh_Hans: '为指定 URL 上的所有图像添加标题，为没有标题的图像添加“Image [idx]: [caption]”作为 alt
+              标签，以支持下游模型的图像交互。'
+          label:
+            en_US: Image caption
+            ja_JP: Image caption
+            pt_BR: Legenda da imagem
+            zh_Hans: 图片说明
+          llm_description: Captions all images at the specified URL
+          max: null
+          min: null
+          name: image_caption
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: boolean
+        - auto_generate: null
+          default: 0
+          form: form
+          human_description:
+            en_US: A "Buttons & Links" section will be created at the end. This helps
+              the downstream LLMs or web agents navigating the page or take further
+              actions.
+            ja_JP: A "Buttons & Links" section will be created at the end. This helps
+              the downstream LLMs or web agents navigating the page or take further
+              actions.
+            pt_BR: Um "Botão & Links" seção será criada no final. Isso ajuda os LLMs
+              ou agentes da web navegando pela página ou executar ações adicionais.
+            zh_Hans: 末尾将添加“按钮和链接”部分，汇总页面上的所有链接。方便下游模型或网络代理做页面导航或执行进一步操作。
+          label:
+            en_US: Gather all links at the end
+            ja_JP: Gather all links at the end
+            pt_BR: Coletar todos os links ao final
+            zh_Hans: 将所有链接集中到最后
+          llm_description: Gather all links at the end
+          max: null
+          min: null
+          name: gather_all_links_at_the_end
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: boolean
+        - auto_generate: null
+          default: 0
+          form: form
+          human_description:
+            en_US: An "Images" section will be created at the end. This gives the
+              downstream LLMs an overview of all visuals on the page, which may improve
+              reasoning.
+            ja_JP: An "Images" section will be created at the end. This gives the
+              downstream LLMs an overview of all visuals on the page, which may improve
+              reasoning.
+            pt_BR: Um "Imagens" seção será criada no final. Isso fornece uma visão
+              geral de todas as imagens na página para os LLMs, que pode melhorar
+              a razão.
+            zh_Hans: 末尾会新增“图片”部分，汇总页面上的所有图片。方便下游模型概览页面的视觉内容，提升推理效果。
+          label:
+            en_US: Gather all images at the end
+            ja_JP: Gather all images at the end
+            pt_BR: Coletar todas as imagens ao final
+            zh_Hans: 将所有图片集中到最后
+          llm_description: Gather all images at the end
+          max: null
+          min: null
+          name: gather_all_images_at_the_end
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: boolean
+        - auto_generate: null
+          default: null
+          form: form
+          human_description:
+            en_US: Use proxy to access URLs
+            ja_JP: Use proxy to access URLs
+            pt_BR: Usar proxy para acessar URLs
+            zh_Hans: 利用代理访问 URL
+          label:
+            en_US: Proxy server
+            ja_JP: Proxy server
+            pt_BR: Servidor de proxy
+            zh_Hans: 代理服务器
+          llm_description: Use proxy to access URLs
+          max: null
+          min: null
+          name: proxy_server
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: 0
+          form: form
+          human_description:
+            en_US: Bypass the Cache
+            ja_JP: Bypass the Cache
+            pt_BR: Ignorar o cache
+            zh_Hans: 是否绕过缓存
+          label:
+            en_US: Bypass the Cache
+            ja_JP: Bypass the Cache
+            pt_BR: Ignorar o cache
+            zh_Hans: 是否绕过缓存
+          llm_description: bypass the cache
+          max: null
+          min: null
+          name: no_cache
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: boolean
+        - auto_generate: null
+          default: 3
+          form: form
+          human_description:
+            en_US: Number of times to retry the request if it fails
+            ja_JP: Number of times to retry the request if it fails
+            pt_BR: Número de vezes para repetir a solicitação se falhar
+            zh_Hans: 请求失败时重试的次数
+          label:
+            en_US: Retry
+            ja_JP: Retry
+            pt_BR: Repetir
+            zh_Hans: 重试
+          llm_description: Number of times to retry the request if it fails
+          max: null
+          min: null
+          name: max_retries
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: number
+        params:
+          gather_all_images_at_the_end: ''
+          gather_all_links_at_the_end: ''
+          image_caption: ''
+          max_retries: ''
+          no_cache: ''
+          proxy_server: ''
+          query: ''
+        provider_id: langgenius/jina_tool/jina
+        provider_name: langgenius/jina_tool/jina
+        provider_type: builtin
+        selected: false
+        title: 联网搜索
+        tool_configurations:
+          gather_all_images_at_the_end:
+            type: constant
+            value: false
+          gather_all_links_at_the_end:
+            type: constant
+            value: false
+          image_caption:
+            type: constant
+            value: false
+          max_retries:
+            type: constant
+            value: 1
+          no_cache:
+            type: constant
+            value: false
+          proxy_server:
+            type: mixed
+            value: null
+        tool_description: 针对给定的查询在互联网上进行搜索，并以适合大模型处理的 Markdown 格式返回最相关的结果。
+        tool_label: 联网搜索
+        tool_name: jina_search
+        tool_node_version: '2'
+        tool_parameters:
+          query:
+            type: mixed
+            value: '{{#1756623687061.text#}}'
+        type: tool
+      height: 220
+      id: '1756623890027'
+      position:
+        x: 938
+        y: 381.5
+      positionAbsolute:
+        x: 938
+        y: 381.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: 29c216c1-1389-41b9-908f-f7bc2910da20
+          role: system
+          text: '# 角色
+
+            企业风险分析专家，擅长编写专业的风险分析报告。
+
+            # 任务
+
+            1. 理解输入的不同维度企业风险信息，对风险信息进行系统性整理和再优化
+
+            2. 层次化地输出企业风险分析报告'
+        - id: 04a3c9fc-40a4-474b-bf1f-fde5bdf382ef
+          role: user
+          text: '关联信息：{{#1756646386942.output#}}
+
+            舆情信息：{{#1756623890027.text#}}'
+        selected: false
+        title: LLM-风险汇总
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1756623918067'
+      position:
+        x: 1908.4819408718954
+        y: 301.5700039768753
+      positionAbsolute:
+        x: 1908.4819408718954
+        y: 301.5700039768753
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        agent_parameters:
+          instruction:
+            type: constant
+            value: '1. 提取用户问题里的地点，范围，搜索对象，然后调用地图工具进行查找。如果没有说明范围，则默认距离是中心点5km。
+
+              2. 将查询到的结果进行整理，用列表或表格层次化输出搜索到的公司，以及公司相关信息，比如地址、公司类型、公司状态、营业时间等查询到的信息。注意不可以编造不存在的信息。
+
+              3. 对搜索到公司信息进行统计整理分析，输出重要结论。'
+          model:
+            type: constant
+            value:
+              completion_params: {}
+              mode: chat
+              model: Doubao-Seed-1.6-thinking
+              model_type: llm
+              provider: langgenius/volcengine_maas/volcengine_maas
+              type: model-selector
+          query:
+            type: constant
+            value: '{{#sys.query#}}'
+          tools:
+            type: constant
+            value:
+            - enabled: true
+              extra:
+                description: 周边搜，根据用户传入关键词以及坐标location，搜索出radius半径范围的POI
+              parameters:
+                keywords:
+                  auto: 1
+                  value: null
+                location:
+                  auto: 1
+                  value: null
+                radius:
+                  auto: 1
+                  value: null
+              provider_name: gaode_mcp
+              provider_show_name: 高德地图
+              schemas:
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: 搜索关键词
+                  ja_JP: 搜索关键词
+                  pt_BR: 搜索关键词
+                  zh_Hans: 搜索关键词
+                label:
+                  en_US: keywords
+                  ja_JP: keywords
+                  pt_BR: keywords
+                  zh_Hans: keywords
+                llm_description: 搜索关键词
+                max: null
+                min: null
+                name: keywords
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: 中心点经度纬度
+                  ja_JP: 中心点经度纬度
+                  pt_BR: 中心点经度纬度
+                  zh_Hans: 中心点经度纬度
+                label:
+                  en_US: location
+                  ja_JP: location
+                  pt_BR: location
+                  zh_Hans: location
+                llm_description: 中心点经度纬度
+                max: null
+                min: null
+                name: location
+                options: []
+                placeholder: null
+                precision: null
+                required: true
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: 搜索半径
+                  ja_JP: 搜索半径
+                  pt_BR: 搜索半径
+                  zh_Hans: 搜索半径
+                label:
+                  en_US: radius
+                  ja_JP: radius
+                  pt_BR: radius
+                  zh_Hans: radius
+                llm_description: 搜索半径
+                max: null
+                min: null
+                name: radius
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: string
+              settings: {}
+              tool_description: 周边搜，根据用户传入关键词以及坐标location，搜索出radius半径范围的POI
+              tool_label: maps_around_search
+              tool_name: maps_around_search
+              type: mcp
+        agent_strategy_label: ReAct
+        agent_strategy_name: ReAct
+        agent_strategy_provider_name: langgenius/agent/agent
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          window:
+            enabled: true
+            size: 10
+        meta:
+          minimum_dify_version: 1.7.0
+          version: 0.0.2
+        output_schema: null
+        plugin_unique_identifier: langgenius/agent:0.0.23@baba5fd2631a535dcd85f070f8be1bdcfb02c46e1a0a830ad00d7bc846063de4
+        selected: false
+        title: Agent
+        tool_node_version: '2'
+        type: agent
+      height: 198
+      id: '1756624205373'
+      position:
+        x: 616.3909644865739
+        y: 680.1870694930159
+      positionAbsolute:
+        x: 616.3909644865739
+        y: 680.1870694930159
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1756624205373.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 105
+      id: '1756624661671'
+      position:
+        x: 920.3909644865739
+        y: 680.1870694930159
+      positionAbsolute:
+        x: 920.3909644865739
+        y: 680.1870694930159
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import json\n\ndef main(arg: str) -> dict:\n    arg = arg.replace(\"\
+          ```\", \"\").replace(\"json\", \"\")\n    questions = json.loads(arg)\n\
+          \    return {\n        \"result\": questions['question']\n    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: array[string]
+        selected: false
+        title: 代码执行-提取问题列表
+        type: code
+        variables:
+        - value_selector:
+          - llm
+          - text
+          value_type: string
+          variable: arg
+      height: 54
+      id: '1756645989129'
+      position:
+        x: 938
+        y: 252.5
+      positionAbsolute:
+        x: 938
+        y: 252.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        error_handle_mode: terminated
+        height: 174
+        is_parallel: false
+        iterator_input_type: array[string]
+        iterator_selector:
+        - '1756645989129'
+        - result
+        output_selector:
+        - '1756646419539'
+        - text
+        output_type: array[string]
+        parallel_nums: 10
+        selected: false
+        start_node_id: 1756646386942start
+        title: 迭代
+        type: iteration
+        width: 388
+      height: 174
+      id: '1756646386942'
+      position:
+        x: 1322.8435347465074
+        y: 116.43018012352499
+      positionAbsolute:
+        x: 1322.8435347465074
+        y: 116.43018012352499
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 388
+      zIndex: 1
+    - data:
+        desc: ''
+        isInIteration: true
+        selected: false
+        title: ''
+        type: iteration-start
+      draggable: false
+      height: 48
+      id: 1756646386942start
+      parentId: '1756646386942'
+      position:
+        x: 24
+        y: 68
+      positionAbsolute:
+        x: 1346.8435347465074
+        y: 184.430180123525
+      selectable: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-iteration-start
+      width: 44
+      zIndex: 1002
+    - data:
+        desc: ''
+        isInIteration: true
+        isInLoop: false
+        is_team_authorization: true
+        iteration_id: '1756646386942'
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: User Input/Question content
+            ja_JP: User Input/Question content
+            pt_BR: User Input/Question content
+            zh_Hans: User Input/Question content
+          label:
+            en_US: query
+            ja_JP: query
+            pt_BR: query
+            zh_Hans: query
+          llm_description: User Input/Question content
+          max: null
+          min: null
+          name: query
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        params:
+          query: ''
+        provider_id: enterprise_relations
+        provider_name: 企业关联关系查询
+        provider_type: mcp
+        selected: false
+        title: ChatGraph
+        tool_configurations: {}
+        tool_description: 基于Neo4j图库的聊天助手，可以查询企业关联关系，分析关联风险
+        tool_label: ChatGraph
+        tool_name: ChatGraph
+        tool_node_version: '2'
+        tool_parameters:
+          query:
+            type: mixed
+            value: '{{#1756646386942.item#}}'
+        type: tool
+      height: 86
+      id: '1756646419539'
+      parentId: '1756646386942'
+      position:
+        x: 128
+        y: 68
+      positionAbsolute:
+        x: 1450.8435347465074
+        y: 184.430180123525
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    viewport:
+      x: 113.44299186493481
+      y: 206.88695555946322
+      zoom: 0.6246793012378755
